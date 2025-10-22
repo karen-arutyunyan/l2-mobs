@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2 Monsters Dashboard - Анализ эффективности фарма</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #0f172a;
+            --bg-light: #1e293b;
+            --border: #334155;
+            --text: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg) 0%, #1e1b4b 100%);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1em;
+        }
+
+        .controls-section {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.6s ease;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 12px 15px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .control-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .buttons-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            border-color: var(--primary);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            font-size: 0.85em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .table-wrapper {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(99, 102, 241, 0.15);
+            border-bottom: 2px solid var(--border);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        th:hover {
+            background: rgba(99, 102, 241, 0.25);
+            color: var(--secondary);
+        }
+
+        th.sortable::after {
+            content: ' ⇅';
+            opacity: 0.5;
+        }
+
+        th.sorted-asc::after {
+            content: ' ↑';
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        th.sorted-desc::after {
+            content: ' ↓';
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        tbody tr.expandable {
+            cursor: pointer;
+        }
+
+        tbody tr.expandable:hover {
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        td {
+            padding: 12px 15px;
+            font-size: 0.95em;
+        }
+
+        .expand-btn {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-align: center;
+            line-height: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .expand-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .drops-details {
+            display: none;
+        }
+
+        .drops-details.show {
+            display: table-row;
+        }
+
+        .drops-container {
+            padding: 20px;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 8px;
+        }
+
+        .drops-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .drop-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .drop-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .drop-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .drop-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+
+        .drop-amount {
+            color: var(--warning);
+        }
+
+        .drop-chance {
+            color: var(--success);
+        }
+
+        .drops-empty {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .monster-name {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .adena-value {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .efficiency-value {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .hp-value {
+            color: var(--text-muted);
+        }
+
+        .hp-multiplier-value {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .hp-multiplier-value.boosted {
+            color: var(--secondary);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 15px;
+            color: #fca5a5;
+            margin-bottom: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state p {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination button.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .pagination-info {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .filters-info {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            td, th {
+                padding: 8px 10px;
+            }
+
+            .stat-card .value {
+                font-size: 1.4em;
+            }
+        }
+
+        .scroll-hint {
+            color: var(--text-muted);
+            font-size: 0.85em;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .wiki-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .wiki-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ L2 Monsters Dashboard</h1>
+            <p>Интерактивный анализ эффективности фарма - фильтрация, поиск и сортировка</p>
+        </header>
+
+        <div class="controls-section">
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="searchInput">🔍 Поиск по названию монстра</label>
+                    <input type="text" id="searchInput" placeholder="Введите название монстра...">
+                </div>
+
+                <div class="control-group">
+                    <label for="searchItemInput">📦 Поиск по названию предмета</label>
+                    <input type="text" id="searchItemInput" placeholder="Поиск предмета в дропах/спойлах...">
+                </div>
+
+                <div class="control-group">
+                    <label for="minLevelFilter">📊 Минимальный уровень</label>
+                    <input type="number" id="minLevelFilter" placeholder="Мин. уровень" min="1" max="88">
+                </div>
+
+                <div class="control-group">
+                    <label for="maxLevelFilter">📊 Максимальный уровень</label>
+                    <input type="number" id="maxLevelFilter" placeholder="Макс. уровень" min="1" max="88">
+                </div>
+
+                <div class="control-group">
+                    <label for="sortBy">🔄 Сортировка</label>
+                    <select id="sortBy">
+                        <option value="name">По названию</option>
+                        <option value="level">По уровню</option>
+                        <option value="adena">По адене (убывание)</option>
+                        <option value="adena-asc">По адене (возрастание)</option>
+                        <option value="efficiency">По эффективности (адена/HP)</option>
+                        <option value="hpMultiplier">По HP Multiplier</option>
+                        <option value="hp">По здоровью</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="buttons-group">
+                <button class="btn-primary" onclick="applyFilters()">✓ Применить фильтры</button>
+                <button class="btn-secondary" onclick="resetFilters()">↺ Сбросить</button>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="label">Всего монстров</div>
+                    <div class="value" id="totalMonstersCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Найдено</div>
+                    <div class="value" id="filteredCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Средняя адена</div>
+                    <div class="value" id="avgAdena">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Лучшая эффективность</div>
+                    <div class="value" id="bestEfficiency">0</div>
+                </div>
+            </div>
+
+            <div class="filters-info" id="filtersInfo"></div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="loading" id="loading">⏳ Загрузка данных монстров...</div>
+            <table id="monstersTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th class="sortable" onclick="sortTable('name')">Название</th>
+                        <th class="sortable" onclick="sortTable('level')">Уровень</th>
+                        <th class="sortable" onclick="sortTable('hp')">HP</th>
+                        <th class="sortable" onclick="sortTable('hpMultiplier')">HP Mult.</th>
+                        <th class="sortable" onclick="sortTable('adena')">Адена (avg)</th>
+                        <th class="sortable" onclick="sortTable('efficiency')">Адена/HP</th>
+                        <th class="sortable" onclick="sortTable('exp')">Опыт</th>
+                        <th class="sortable" onclick="sortTable('exp-efficiency')">Опыт/HP</th>
+                        <th id="itemChanceHeader" style="display: none;">Шанс предмета</th>
+                        <th>Информация</th>
+                    </tr>
+                </thead>
+                <tbody id="monstersBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+        <div class="pagination-info" id="paginationInfo"></div>
+    </div>
+
+    <script>
+        const ITEMS_PER_PAGE = 25;
+        let allMonsters = [];
+        let filteredMonsters = [];
+        let currentPage = 1;
+        let currentSort = 'name';
+        let sortDirection = 'asc';
+        let currentItemSearch = ''; // Текущий поиск по предмету
+
+        // Загрузка данных при открытии страницы
+        async function loadData() {
+            try {
+                const response = await fetch('data/mobs_full_stats.json');
+                if (!response.ok) throw new Error('Ошибка загрузки файла');
+                
+                allMonsters = await response.json();
+                
+                // Удаление дубликатов (по ID + name)
+                const unique = new Map();
+                allMonsters.forEach(monster => {
+                    const key = `${monster.id}-${monster.name}`;
+                    if (!unique.has(key)) {
+                        unique.set(key, monster);
+                    }
+                });
+                allMonsters = Array.from(unique.values());
+                
+                // Добавляем вычисленные поля
+                allMonsters = allMonsters.map(monster => ({
+                    ...monster,
+                    hp: extractHP(monster),
+                    exp: extractExp(monster),
+                    avgAdena: monster.adena?.avg || 0,
+                    hpMultiplier: monster.attributes?.hpMultiplier || 1,
+                    efficiency: calculateEfficiency(monster),
+                    expEfficiency: calculateExpEfficiency(monster)
+                }));
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('monstersTable').style.display = 'table';
+                document.getElementById('totalMonstersCount').textContent = allMonsters.length.toLocaleString('ru-RU');
+                
+                applyFilters();
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `<p class="error">❌ Ошибка загрузки: ${error.message}</p>`;
+            }
+        }
+
+        function extractHP(monster) {
+            return monster.stats?.hp || 0;
+        }
+
+        function extractExp(monster) {
+            return monster.stats?.exp || 0;
+        }
+
+        function calculateEfficiency(monster) {
+            const hp = extractHP(monster);
+            const adena = monster.adena?.avg || 0;
+            return hp > 0 ? Math.round((adena / hp) * 100) / 100 : 0;
+        }
+
+        function calculateExpEfficiency(monster) {
+            const hp = extractHP(monster);
+            const exp = extractExp(monster);
+            return hp > 0 ? Math.round((exp / hp) * 100) / 100 : 0;
+        }
+
+        // Ищет предмет в дропах и спойлах, возвращает chance или null
+        function findItemInDrops(monster, searchText) {
+            if (!searchText) return null;
+            
+            const search = searchText.toLowerCase();
+            
+            // Проверяем drops
+            if (monster.drops) {
+                for (const drop of monster.drops) {
+                    if (drop.name.toLowerCase().includes(search)) {
+                        return drop.chance;
+                    }
+                }
+            }
+            
+            // Проверяем spoils
+            if (monster.spoils) {
+                for (const spoil of monster.spoils) {
+                    if (spoil.name.toLowerCase().includes(search)) {
+                        return spoil.chance;
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const itemSearch = document.getElementById('searchItemInput').value.toLowerCase();
+            currentItemSearch = itemSearch; // Сохраняем для использования в renderTable
+            const minLevel = parseInt(document.getElementById('minLevelFilter').value) || 0;
+            const maxLevel = parseInt(document.getElementById('maxLevelFilter').value) || 999;
+            const sortBy = document.getElementById('sortBy').value;
+
+            // Показываем/скрываем столбец шанса в зависимости от поиска по предмету
+            document.getElementById('itemChanceHeader').style.display = itemSearch ? 'table-cell' : 'none';
+
+            filteredMonsters = allMonsters.filter(monster => {
+                const matchesSearch = monster.name.toLowerCase().includes(search);
+                const matchesLevel = monster.level >= minLevel && monster.level <= maxLevel;
+                
+                // Если поиск по предмету активен, фильтруем только монстров с этим предметом
+                const matchesItem = !itemSearch || findItemInDrops(monster, itemSearch) !== null;
+                
+                return matchesSearch && matchesLevel && matchesItem;
+            });
+
+            // Обновляем информацию о фильтрах
+            updateFiltersInfo(search, minLevel, maxLevel, itemSearch);
+
+            // Сортировка
+            sortMonsters(sortBy);
+            
+            // Пагинация
+            currentPage = 1;
+            updatePagination();
+            renderTable();
+
+            // Обновляем статистику
+            updateStats();
+        }
+
+        function updateFiltersInfo(search, minLevel, maxLevel, itemSearch) {
+            let info = [];
+            if (search) info.push(`🔍 Монстр: "${search}"`);
+            if (itemSearch) info.push(`📦 Предмет: "${itemSearch}"`);
+            if (minLevel > 0 || maxLevel < 999) {
+                info.push(`📊 Уровень: ${minLevel === 0 ? '1' : minLevel} - ${maxLevel === 999 ? '∞' : maxLevel}`);
+            }
+            
+            const infoEl = document.getElementById('filtersInfo');
+            if (info.length > 0) {
+                infoEl.textContent = 'Активные фильтры: ' + info.join(' • ');
+            } else {
+                infoEl.textContent = '';
+            }
+        }
+
+        function sortMonsters(sortBy) {
+            const sortMap = {
+                'name': (a, b) => a.name.localeCompare(b.name, 'ru'),
+                'level': (a, b) => b.level - a.level,
+                'adena': (a, b) => b.avgAdena - a.avgAdena,
+                'adena-asc': (a, b) => a.avgAdena - b.avgAdena,
+                'efficiency': (a, b) => b.efficiency - a.efficiency,
+                'exp': (a, b) => b.exp - a.exp,
+                'exp-efficiency': (a, b) => b.expEfficiency - a.expEfficiency,
+                'hp': (a, b) => b.hp - a.hp,
+                'hpMultiplier': (a, b) => (b.attributes?.hpMultiplier || 1) - (a.attributes?.hpMultiplier || 1)
+            };
+
+            filteredMonsters.sort(sortMap[sortBy] || sortMap['name']);
+        }
+
+        function sortTable(column) {
+            const headerCells = document.querySelectorAll('th.sortable');
+            headerCells.forEach(cell => cell.classList.remove('sorted-asc', 'sorted-desc'));
+
+            if (currentSort === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort = column;
+                sortDirection = 'asc';
+            }
+
+            const columnIndex = Array.from(document.querySelectorAll('th.sortable')).findIndex(th => {
+                const sortValue = {
+                    'Название': 'name',
+                    'Уровень': 'level',
+                    'HP': 'hp',
+                    'Адена (avg)': 'adena',
+                    'Адена/HP': 'efficiency',
+                    'Опыт': 'exp',
+                    'Опыт/HP': 'exp-efficiency'
+                }[th.textContent.trim()];
+                return sortValue === column;
+            });
+
+            if (columnIndex >= 0) {
+                const headerCell = document.querySelectorAll('th.sortable')[columnIndex];
+                headerCell.classList.add(sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc');
+            }
+
+            const sortMap = {
+                'name': (a, b) => sortDirection === 'asc' 
+                    ? a.name.localeCompare(b.name, 'ru')
+                    : b.name.localeCompare(a.name, 'ru'),
+                'level': (a, b) => sortDirection === 'asc' 
+                    ? a.level - b.level 
+                    : b.level - a.level,
+                'hp': (a, b) => sortDirection === 'asc' 
+                    ? a.hp - b.hp 
+                    : b.hp - a.hp,
+                'adena': (a, b) => sortDirection === 'asc' 
+                    ? a.avgAdena - b.avgAdena 
+                    : b.avgAdena - a.avgAdena,
+                'efficiency': (a, b) => sortDirection === 'asc' 
+                    ? a.efficiency - b.efficiency 
+                    : b.efficiency - a.efficiency,
+                'exp': (a, b) => sortDirection === 'asc' 
+                    ? a.exp - b.exp 
+                    : b.exp - a.exp,
+                'exp-efficiency': (a, b) => sortDirection === 'asc' 
+                    ? a.expEfficiency - b.expEfficiency 
+                    : b.expEfficiency - a.expEfficiency
+            };
+
+            filteredMonsters.sort(sortMap[column] || sortMap['name']);
+            currentPage = 1;
+            updatePagination();
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('monstersBody');
+            tbody.innerHTML = '';
+
+            // Считаем colspan в зависимости от видимости столбца
+            const itemChanceColspan = currentItemSearch ? 11 : 10;
+            
+            if (filteredMonsters.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${itemChanceColspan}" style="text-align: center; padding: 40px; color: var(--text-muted);">Монстры не найдены 😔</td></tr>`;
+                return;
+            }
+
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pageMonsters = filteredMonsters.slice(start, end);
+
+            pageMonsters.forEach((monster, idx) => {
+                const monsterId = `monster-${start + idx}`;
+                const dropsId = `drops-${start + idx}`;
+                const wikiUrl = `https://wiki1.mw2.wiki${monster.href}`;
+                const hpMultiplier = monster.attributes?.hpMultiplier || 1;
+                
+                // Ищем предмет для этого монстра если активен поиск
+                const itemChance = findItemInDrops(monster, currentItemSearch);
+                const itemChanceCell = currentItemSearch 
+                    ? `<td style="color: var(--success); font-weight: 600; text-align: center;">${itemChance}</td>` 
+                    : '';
+                
+                // Основная строка с данными
+                const row = document.createElement('tr');
+                row.className = 'expandable';
+                row.innerHTML = `
+                    <td>
+                        <div class="expand-btn" onclick="toggleDrops('${dropsId}', event)">+</div>
+                    </td>
+                    <td>
+                        <div class="monster-name">
+                            <span class="level-badge">${monster.level}</span>
+                            <span>${monster.name}</span>
+                            <a href="${wikiUrl}" target="_blank" class="wiki-link" title="Открыть на Wiki">📖</a>
+                        </div>
+                    </td>
+                    <td>${monster.level}</td>
+                    <td class="hp-value">${monster.hp.toLocaleString('ru-RU')}</td>
+                    <td class="hp-multiplier-value ${hpMultiplier > 1 ? 'boosted' : ''}">${hpMultiplier > 1 ? hpMultiplier + 'x 🔥' : '—'}</td>
+                    <td class="adena-value">${monster.avgAdena.toLocaleString('ru-RU')}</td>
+                    <td class="efficiency-value">${monster.efficiency.toLocaleString('ru-RU')} 💰/❤️</td>
+                    <td class="hp-value">${monster.exp.toLocaleString('ru-RU')}</td>
+                    <td class="efficiency-value">${monster.expEfficiency.toLocaleString('ru-RU')} 📚/❤️</td>
+                    ${itemChanceCell}
+                    <td style="font-size: 0.9em; color: var(--text-muted);">ID: ${monster.id} | Дропов: ${(monster.drops?.length || 0)}</td>
+                `;
+                tbody.appendChild(row);
+
+                // Строка с дропами (скрытая)
+                const dropsRow = document.createElement('tr');
+                dropsRow.className = 'drops-details';
+                dropsRow.id = dropsId;
+                dropsRow.innerHTML = `
+                    <td colspan="${itemChanceColspan}">
+                        <div class="drops-container">
+                            ${renderDropsContent(monster)}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(dropsRow);
+            });
+        }
+
+        function renderDropsContent(monster) {
+            const drops = monster.drops || [];
+            
+            if (drops.length === 0) {
+                return '<div class="drops-empty">У этого монстра нет дропов</div>';
+            }
+
+            let html = '<div class="drops-grid">';
+            drops.forEach(drop => {
+                html += `
+                    <div class="drop-item">
+                        <div class="drop-name">${drop.name}</div>
+                        <div class="drop-info">
+                            <span class="drop-amount">📦 ${drop.amount}</span>
+                            <span class="drop-chance">🎲 ${drop.chance}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function toggleDrops(dropsId, event) {
+            event.stopPropagation();
+            const dropsRow = document.getElementById(dropsId);
+            const expandBtn = event.target;
+            
+            dropsRow.classList.toggle('show');
+            expandBtn.textContent = dropsRow.classList.contains('show') ? '−' : '+';
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredMonsters.length / ITEMS_PER_PAGE);
+            const paginationEl = document.getElementById('pagination');
+            const paginationInfoEl = document.getElementById('paginationInfo');
+            
+            paginationEl.innerHTML = '';
+
+            if (totalPages <= 1) {
+                paginationInfoEl.textContent = `Показано ${filteredMonsters.length} монстров`;
+                return;
+            }
+
+            // Предыдущая страница
+            const prevBtn = document.createElement('button');
+            prevBtn.textContent = '← Предыдущая';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                    updatePagination();
+                    window.scrollTo(0, 0);
+                }
+            };
+            paginationEl.appendChild(prevBtn);
+
+            // Номера страниц
+            for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = i === currentPage ? 'active' : '';
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderTable();
+                    updatePagination();
+                    window.scrollTo(0, 0);
+                };
+                paginationEl.appendChild(btn);
+            }
+
+            // Следующая страница
+            const nextBtn = document.createElement('button');
+            nextBtn.textContent = 'Следующая →';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                    updatePagination();
+                    window.scrollTo(0, 0);
+                }
+            };
+            paginationEl.appendChild(nextBtn);
+
+            const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+            const end = Math.min(currentPage * ITEMS_PER_PAGE, filteredMonsters.length);
+            paginationInfoEl.textContent = `Страница ${currentPage} из ${totalPages} | Показано ${start}-${end} из ${filteredMonsters.length} монстров`;
+        }
+
+        function updateStats() {
+            document.getElementById('filteredCount').textContent = filteredMonsters.length;
+            
+            if (filteredMonsters.length === 0) {
+                document.getElementById('avgAdena').textContent = '0';
+                document.getElementById('bestEfficiency').textContent = '0';
+                return;
+            }
+
+            const avgAdena = Math.round(
+                filteredMonsters.reduce((sum, m) => sum + m.avgAdena, 0) / filteredMonsters.length
+            );
+            document.getElementById('avgAdena').textContent = avgAdena.toLocaleString('ru-RU');
+
+            const bestEfficiency = Math.max(...filteredMonsters.map(m => m.efficiency));
+            document.getElementById('bestEfficiency').textContent = bestEfficiency.toLocaleString('ru-RU');
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchItemInput').value = '';
+            document.getElementById('minLevelFilter').value = '';
+            document.getElementById('maxLevelFilter').value = '';
+            document.getElementById('sortBy').value = 'name';
+            document.getElementById('filtersInfo').textContent = '';
+            applyFilters();
+        }
+
+        // Обработчик Enter для поиска по предмету
+        document.getElementById('searchItemInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
+        });
+
+        // Загрузка данных при открытии страницы
+        loadData();
+    </script>
+</body>
+</html>
