@@ -1,0 +1,38 @@
+[
+  {
+    "id": 20130,
+    "name": "Орк",
+    "level": "Ур. 6",
+    "href": "/npc/20130-orc/live",
+    "minAdena": 36,
+    "maxAdena": 62,
+    "chance": 70,
+    "avgAdena": 49,
+    "stats": null,
+    "hasData": false
+  },
+  {
+    "id": 20477,
+    "name": "Древесный Волк Кхаши",
+    "level": "Ур. 6",
+    "href": "/npc/20477-kasha-timber-wolf/live",
+    "minAdena": 36,
+    "maxAdena": 62,
+    "chance": 70,
+    "avgAdena": 49,
+    "stats": null,
+    "hasData": false
+  },
+  {
+    "id": 20446,
+    "name": "Орк Утуку",
+    "level": "Ур. 6",
+    "href": "/npc/20446-utuku-orc/live",
+    "minAdena": 36,
+    "maxAdena": 62,
+    "chance": 70,
+    "avgAdena": 49,
+    "stats": null,
+    "hasData": false
+  }
+]

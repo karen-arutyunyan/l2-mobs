@@ -1,0 +1,24 @@
+{
+  "Level": 3,
+  "Respawn Time": 9,
+  "HP": 90,
+  "MP": 67,
+  "P.Atk.": 10,
+  "M.Atk.": 4,
+  "P.Def.": 44,
+  "M.Def.": 33,
+  "Accuracy": 36,
+  "Evasion": 36,
+  "EXP": 99,
+  "SP": 10,
+  "Attack Attribute": "No Attack Attribute",
+  "Defence Attribute": 20,
+  "Defence Attributes": {
+    "Fire": 20,
+    "Water": 20,
+    "Wind": 53,
+    "Earth": 20,
+    "Holy": 20,
+    "Unholy": 20
+  }
+}

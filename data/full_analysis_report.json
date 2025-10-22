@@ -1,0 +1,1060 @@
+{
+  "timestamp": "2025-10-22T04:45:17.424Z",
+  "totalMobs": 2605,
+  "uniqueIds": 2524,
+  "avgAdena": 117173,
+  "totalAdena": 305235827,
+  "levelStats": [
+    {
+      "level": 1,
+      "count": 11,
+      "avgAdena": 19,
+      "maxAdena": 21,
+      "minAdena": 6
+    },
+    {
+      "level": 2,
+      "count": 5,
+      "avgAdena": 25,
+      "maxAdena": 25,
+      "minAdena": 25
+    },
+    {
+      "level": 3,
+      "count": 6,
+      "avgAdena": 30,
+      "maxAdena": 30,
+      "minAdena": 30
+    },
+    {
+      "level": 4,
+      "count": 6,
+      "avgAdena": 36,
+      "maxAdena": 36,
+      "minAdena": 36
+    },
+    {
+      "level": 5,
+      "count": 7,
+      "avgAdena": 42,
+      "maxAdena": 42,
+      "minAdena": 42
+    },
+    {
+      "level": 6,
+      "count": 8,
+      "avgAdena": 49,
+      "maxAdena": 49,
+      "minAdena": 49
+    },
+    {
+      "level": 7,
+      "count": 6,
+      "avgAdena": 57,
+      "maxAdena": 57,
+      "minAdena": 57
+    },
+    {
+      "level": 8,
+      "count": 10,
+      "avgAdena": 66,
+      "maxAdena": 66,
+      "minAdena": 66
+    },
+    {
+      "level": 9,
+      "count": 7,
+      "avgAdena": 88,
+      "maxAdena": 164,
+      "minAdena": 75
+    },
+    {
+      "level": 10,
+      "count": 17,
+      "avgAdena": 122,
+      "maxAdena": 187,
+      "minAdena": 86
+    },
+    {
+      "level": 11,
+      "count": 10,
+      "avgAdena": 135,
+      "maxAdena": 213,
+      "minAdena": 97
+    },
+    {
+      "level": 12,
+      "count": 17,
+      "avgAdena": 148,
+      "maxAdena": 229,
+      "minAdena": 104
+    },
+    {
+      "level": 13,
+      "count": 15,
+      "avgAdena": 176,
+      "maxAdena": 249,
+      "minAdena": 113
+    },
+    {
+      "level": 14,
+      "count": 21,
+      "avgAdena": 155,
+      "maxAdena": 265,
+      "minAdena": 121
+    },
+    {
+      "level": 15,
+      "count": 24,
+      "avgAdena": 168,
+      "maxAdena": 284,
+      "minAdena": 130
+    },
+    {
+      "level": 16,
+      "count": 20,
+      "avgAdena": 197,
+      "maxAdena": 465,
+      "minAdena": 138
+    },
+    {
+      "level": 17,
+      "count": 26,
+      "avgAdena": 242,
+      "maxAdena": 496,
+      "minAdena": 148
+    },
+    {
+      "level": 18,
+      "count": 22,
+      "avgAdena": 302,
+      "maxAdena": 538,
+      "minAdena": 155
+    },
+    {
+      "level": 19,
+      "count": 22,
+      "avgAdena": 396,
+      "maxAdena": 775,
+      "minAdena": 169
+    },
+    {
+      "level": 20,
+      "count": 22,
+      "avgAdena": 435,
+      "maxAdena": 1037,
+      "minAdena": 179
+    },
+    {
+      "level": 21,
+      "count": 25,
+      "avgAdena": 458,
+      "maxAdena": 843,
+      "minAdena": 149
+    },
+    {
+      "level": 22,
+      "count": 18,
+      "avgAdena": 452,
+      "maxAdena": 1144,
+      "minAdena": 179
+    },
+    {
+      "level": 23,
+      "count": 14,
+      "avgAdena": 307,
+      "maxAdena": 595,
+      "minAdena": 198
+    },
+    {
+      "level": 24,
+      "count": 15,
+      "avgAdena": 390,
+      "maxAdena": 740,
+      "minAdena": 174
+    },
+    {
+      "level": 25,
+      "count": 23,
+      "avgAdena": 31822,
+      "maxAdena": 175000,
+      "minAdena": 196
+    },
+    {
+      "level": 26,
+      "count": 11,
+      "avgAdena": 507,
+      "maxAdena": 828,
+      "minAdena": 206
+    },
+    {
+      "level": 27,
+      "count": 17,
+      "avgAdena": 517,
+      "maxAdena": 879,
+      "minAdena": 201
+    },
+    {
+      "level": 28,
+      "count": 15,
+      "avgAdena": 649,
+      "maxAdena": 1263,
+      "minAdena": 268
+    },
+    {
+      "level": 29,
+      "count": 20,
+      "avgAdena": 596,
+      "maxAdena": 1336,
+      "minAdena": 221
+    },
+    {
+      "level": 30,
+      "count": 36,
+      "avgAdena": 26338,
+      "maxAdena": 225000,
+      "minAdena": 167
+    },
+    {
+      "level": 31,
+      "count": 13,
+      "avgAdena": 596,
+      "maxAdena": 1444,
+      "minAdena": 319
+    },
+    {
+      "level": 32,
+      "count": 18,
+      "avgAdena": 779,
+      "maxAdena": 1686,
+      "minAdena": 260
+    },
+    {
+      "level": 33,
+      "count": 27,
+      "avgAdena": 780,
+      "maxAdena": 1841,
+      "minAdena": 276
+    },
+    {
+      "level": 34,
+      "count": 21,
+      "avgAdena": 706,
+      "maxAdena": 1852,
+      "minAdena": 291
+    },
+    {
+      "level": 35,
+      "count": 40,
+      "avgAdena": 29050,
+      "maxAdena": 275000,
+      "minAdena": 80
+    },
+    {
+      "level": 36,
+      "count": 16,
+      "avgAdena": 655,
+      "maxAdena": 1355,
+      "minAdena": 325
+    },
+    {
+      "level": 37,
+      "count": 15,
+      "avgAdena": 661,
+      "maxAdena": 1383,
+      "minAdena": 342
+    },
+    {
+      "level": 38,
+      "count": 14,
+      "avgAdena": 809,
+      "maxAdena": 2009,
+      "minAdena": 445
+    },
+    {
+      "level": 39,
+      "count": 16,
+      "avgAdena": 690,
+      "maxAdena": 2455,
+      "minAdena": 379
+    },
+    {
+      "level": 40,
+      "count": 41,
+      "avgAdena": 33525,
+      "maxAdena": 325000,
+      "minAdena": 255
+    },
+    {
+      "level": 41,
+      "count": 10,
+      "avgAdena": 1052,
+      "maxAdena": 2275,
+      "minAdena": 535
+    },
+    {
+      "level": 42,
+      "count": 21,
+      "avgAdena": 1391,
+      "maxAdena": 3522,
+      "minAdena": 231
+    },
+    {
+      "level": 43,
+      "count": 28,
+      "avgAdena": 1468,
+      "maxAdena": 3586,
+      "minAdena": 328
+    },
+    {
+      "level": 44,
+      "count": 25,
+      "avgAdena": 1793,
+      "maxAdena": 3763,
+      "minAdena": 239
+    },
+    {
+      "level": 45,
+      "count": 54,
+      "avgAdena": 29942,
+      "maxAdena": 375000,
+      "minAdena": 126
+    },
+    {
+      "level": 46,
+      "count": 17,
+      "avgAdena": 1524,
+      "maxAdena": 2817,
+      "minAdena": 550
+    },
+    {
+      "level": 47,
+      "count": 21,
+      "avgAdena": 1607,
+      "maxAdena": 3683,
+      "minAdena": 400
+    },
+    {
+      "level": 48,
+      "count": 24,
+      "avgAdena": 1735,
+      "maxAdena": 4123,
+      "minAdena": 552
+    },
+    {
+      "level": 49,
+      "count": 21,
+      "avgAdena": 1875,
+      "maxAdena": 4182,
+      "minAdena": 312
+    },
+    {
+      "level": 50,
+      "count": 47,
+      "avgAdena": 39364,
+      "maxAdena": 425000,
+      "minAdena": 433
+    },
+    {
+      "level": 51,
+      "count": 22,
+      "avgAdena": 1867,
+      "maxAdena": 4300,
+      "minAdena": 449
+    },
+    {
+      "level": 52,
+      "count": 18,
+      "avgAdena": 2576,
+      "maxAdena": 4421,
+      "minAdena": 692
+    },
+    {
+      "level": 53,
+      "count": 39,
+      "avgAdena": 2538,
+      "maxAdena": 4769,
+      "minAdena": 506
+    },
+    {
+      "level": 54,
+      "count": 24,
+      "avgAdena": 2773,
+      "maxAdena": 5869,
+      "minAdena": 705
+    },
+    {
+      "level": 55,
+      "count": 33,
+      "avgAdena": 4944,
+      "maxAdena": 21250,
+      "minAdena": 190
+    },
+    {
+      "level": 56,
+      "count": 16,
+      "avgAdena": 1721,
+      "maxAdena": 4596,
+      "minAdena": 747
+    },
+    {
+      "level": 57,
+      "count": 17,
+      "avgAdena": 3064,
+      "maxAdena": 6643,
+      "minAdena": 790
+    },
+    {
+      "level": 58,
+      "count": 16,
+      "avgAdena": 9895,
+      "maxAdena": 105000,
+      "minAdena": 882
+    },
+    {
+      "level": 59,
+      "count": 16,
+      "avgAdena": 3108,
+      "maxAdena": 8773,
+      "minAdena": 878
+    },
+    {
+      "level": 60,
+      "count": 34,
+      "avgAdena": 5526,
+      "maxAdena": 25000,
+      "minAdena": 634
+    },
+    {
+      "level": 61,
+      "count": 17,
+      "avgAdena": 3056,
+      "maxAdena": 15651,
+      "minAdena": 943
+    },
+    {
+      "level": 62,
+      "count": 27,
+      "avgAdena": 3836,
+      "maxAdena": 16061,
+      "minAdena": 977
+    },
+    {
+      "level": 63,
+      "count": 36,
+      "avgAdena": 4028,
+      "maxAdena": 17527,
+      "minAdena": 977
+    },
+    {
+      "level": 64,
+      "count": 31,
+      "avgAdena": 6193,
+      "maxAdena": 17667,
+      "minAdena": 822
+    },
+    {
+      "level": 65,
+      "count": 55,
+      "avgAdena": 8166,
+      "maxAdena": 125000,
+      "minAdena": 271
+    },
+    {
+      "level": 66,
+      "count": 21,
+      "avgAdena": 2529,
+      "maxAdena": 8489,
+      "minAdena": 1081
+    },
+    {
+      "level": 67,
+      "count": 40,
+      "avgAdena": 3396,
+      "maxAdena": 18228,
+      "minAdena": 784
+    },
+    {
+      "level": 68,
+      "count": 25,
+      "avgAdena": 4004,
+      "maxAdena": 19586,
+      "minAdena": 938
+    },
+    {
+      "level": 69,
+      "count": 34,
+      "avgAdena": 5054,
+      "maxAdena": 18774,
+      "minAdena": 819
+    },
+    {
+      "level": 70,
+      "count": 41,
+      "avgAdena": 7515,
+      "maxAdena": 37500,
+      "minAdena": 886
+    },
+    {
+      "level": 71,
+      "count": 19,
+      "avgAdena": 4017,
+      "maxAdena": 13391,
+      "minAdena": 1704
+    },
+    {
+      "level": 72,
+      "count": 35,
+      "avgAdena": 9720,
+      "maxAdena": 109312,
+      "minAdena": 550
+    },
+    {
+      "level": 73,
+      "count": 37,
+      "avgAdena": 4692,
+      "maxAdena": 21719,
+      "minAdena": 1151
+    },
+    {
+      "level": 74,
+      "count": 25,
+      "avgAdena": 6926,
+      "maxAdena": 20633,
+      "minAdena": 1637
+    },
+    {
+      "level": 75,
+      "count": 39,
+      "avgAdena": 11185,
+      "maxAdena": 52500,
+      "minAdena": 371
+    },
+    {
+      "level": 76,
+      "count": 56,
+      "avgAdena": 13028,
+      "maxAdena": 52530,
+      "minAdena": 1353
+    },
+    {
+      "level": 77,
+      "count": 18,
+      "avgAdena": 8862,
+      "maxAdena": 18311,
+      "minAdena": 1806
+    },
+    {
+      "level": 78,
+      "count": 171,
+      "avgAdena": 7387,
+      "maxAdena": 15914,
+      "minAdena": 1353
+    },
+    {
+      "level": 79,
+      "count": 18,
+      "avgAdena": 2402424,
+      "maxAdena": 16000000,
+      "minAdena": 1396
+    },
+    {
+      "level": 80,
+      "count": 108,
+      "avgAdena": 11413,
+      "maxAdena": 82865,
+      "minAdena": 381
+    },
+    {
+      "level": 81,
+      "count": 102,
+      "avgAdena": 50449,
+      "maxAdena": 1500000,
+      "minAdena": 1029
+    },
+    {
+      "level": 82,
+      "count": 124,
+      "avgAdena": 1437985,
+      "maxAdena": 16000000,
+      "minAdena": 594
+    },
+    {
+      "level": 83,
+      "count": 43,
+      "avgAdena": 23026,
+      "maxAdena": 648371,
+      "minAdena": 523
+    },
+    {
+      "level": 84,
+      "count": 148,
+      "avgAdena": 25641,
+      "maxAdena": 433989,
+      "minAdena": 243
+    },
+    {
+      "level": 85,
+      "count": 79,
+      "avgAdena": 584908,
+      "maxAdena": 16000000,
+      "minAdena": 0
+    },
+    {
+      "level": 86,
+      "count": 33,
+      "avgAdena": 193977,
+      "maxAdena": 308203,
+      "minAdena": 1482
+    },
+    {
+      "level": 87,
+      "count": 7,
+      "avgAdena": 235353,
+      "maxAdena": 298201,
+      "minAdena": 187000
+    },
+    {
+      "level": 88,
+      "count": 16,
+      "avgAdena": 258624,
+      "maxAdena": 341215,
+      "minAdena": 207000
+    }
+  ],
+  "rangeStats": [
+    {
+      "range": "Новички (1-5)",
+      "count": 35,
+      "avgAdena": 29
+    },
+    {
+      "range": "Начальные (6-15)",
+      "count": 135,
+      "avgAdena": 133
+    },
+    {
+      "range": "Средние (16-30)",
+      "count": 306,
+      "avgAdena": 5820
+    },
+    {
+      "range": "Средне-высокие (31-50)",
+      "count": 489,
+      "avgAdena": 13027
+    },
+    {
+      "range": "Высокие (51-70)",
+      "count": 562,
+      "avgAdena": 4630
+    },
+    {
+      "range": "Эпик/Боссы (71-85)",
+      "count": 1022,
+      "avgAdena": 276200
+    }
+  ],
+  "topMobs": [
+    {
+      "id": 29019,
+      "name": "Антарас",
+      "level": "Ур. 79",
+      "href": "/npc/29019-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29019,
+      "name": "Антарас",
+      "level": "Ур. 79",
+      "href": "/npc/29019-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29028,
+      "name": "Валакас",
+      "level": "Ур. 85",
+      "href": "/npc/29028-valakas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 14000000,
+      "maxAdena": 18000000,
+      "chance": 100,
+      "avgAdena": 16000000
+    },
+    {
+      "id": 29019,
+      "name": "Антарас",
+      "level": "Ур. 79",
+      "href": "/npc/29019-antharas/live",
+      "minAdena": 9000000,
+      "maxAdena": 13000000,
+      "chance": 100,
+      "avgAdena": 11000000
+    },
+    {
+      "id": 29068,
+      "name": "Антарас",
+      "level": "Ур. 82",
+      "href": "/npc/29068-antharas/live",
+      "minAdena": 9000000,
+      "maxAdena": 13000000,
+      "chance": 100,
+      "avgAdena": 11000000
+    },
+    {
+      "id": 29047,
+      "name": "Скарлет Ван Халиша",
+      "level": "Ур. 85",
+      "href": "/npc/29047-scarlet-van-halisha/live",
+      "minAdena": 9000000,
+      "maxAdena": 11000000,
+      "chance": 100,
+      "avgAdena": 10000000
+    },
+    {
+      "id": 29047,
+      "name": "Скарлет Ван Халиша",
+      "level": "Ур. 85",
+      "href": "/npc/29047-scarlet-van-halisha/live",
+      "minAdena": 9000000,
+      "maxAdena": 11000000,
+      "chance": 100,
+      "avgAdena": 10000000
+    },
+    {
+      "id": 29028,
+      "name": "Валакас",
+      "level": "Ур. 85",
+      "href": "/npc/29028-valakas/live",
+      "minAdena": 2000000,
+      "maxAdena": 6000000,
+      "chance": 100,
+      "avgAdena": 4000000
+    },
+    {
+      "id": 33547,
+      "name": "Темнопрыг",
+      "level": "Ур. 81",
+      "href": "/npc/33547-darkleap/live",
+      "minAdena": 500000,
+      "maxAdena": 2500000,
+      "chance": 100,
+      "avgAdena": 1500000
+    },
+    {
+      "id": 33544,
+      "name": "Глумвинг",
+      "level": "Ур. 82",
+      "href": "/npc/33544-glumwing/live",
+      "minAdena": 313138,
+      "maxAdena": 2237871,
+      "chance": 100,
+      "avgAdena": 1275505
+    }
+  ],
+  "bottomMobs": [
+    {
+      "id": 24206,
+      "name": "Дозорный Лаборатории",
+      "level": "Ур. 85",
+      "href": "/npc/24206-laboratory-patrol/live",
+      "minAdena": 5000,
+      "chance": 70,
+      "avgAdena": null
+    },
+    {
+      "id": 18003,
+      "name": "Бородатый Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/18003-bearded-keltir/live",
+      "minAdena": 5,
+      "maxAdena": 7,
+      "chance": 70,
+      "avgAdena": 6
+    },
+    {
+      "id": 18003,
+      "name": "Бородатый Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/18003-bearded-keltir/live",
+      "minAdena": 8,
+      "maxAdena": 12,
+      "chance": 70,
+      "avgAdena": 10
+    },
+    {
+      "id": 22228,
+      "name": "Серый Эльпи",
+      "level": "Ур. 1",
+      "href": "/npc/22228-grey-elpy/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 22229,
+      "name": "Молодой Серый Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/22229-young-grey-keltir/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 20545,
+      "name": "Молодой Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/20545-young-keltir/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 20531,
+      "name": "Молодой Степной Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/20531-young-prairie-keltir/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 20530,
+      "name": "Молодой Рыжий Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/20530-young-red-keltir/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 20481,
+      "name": "Бородатый Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/20481-bearded-keltir/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 18342,
+      "name": "Гремлин",
+      "level": "Ур. 1",
+      "href": "/npc/18342-gremlin/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 20529,
+      "name": "Молодой Бурый Шакал",
+      "level": "Ур. 1",
+      "href": "/npc/20529-young-brown-keltir/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 20432,
+      "name": "Эльпи",
+      "level": "Ур. 1",
+      "href": "/npc/20432-elpy/live",
+      "minAdena": 15,
+      "maxAdena": 26,
+      "chance": 70,
+      "avgAdena": 21
+    },
+    {
+      "id": 22230,
+      "name": "Серый Шакал",
+      "level": "Ур. 2",
+      "href": "/npc/22230-grey-keltir/live",
+      "minAdena": 18,
+      "maxAdena": 32,
+      "chance": 70,
+      "avgAdena": 25
+    },
+    {
+      "id": 20534,
+      "name": "Рыжий Шакал",
+      "level": "Ур. 2",
+      "href": "/npc/20534-red-keltir/live",
+      "minAdena": 18,
+      "maxAdena": 31,
+      "chance": 70,
+      "avgAdena": 25
+    },
+    {
+      "id": 20533,
+      "name": "Длиннохвостый Шакал",
+      "level": "Ур. 2",
+      "href": "/npc/20533-longtail-keltir/live",
+      "minAdena": 18,
+      "maxAdena": 31,
+      "chance": 70,
+      "avgAdena": 25
+    },
+    {
+      "id": 20532,
+      "name": "Бурый Шакал",
+      "level": "Ур. 2",
+      "href": "/npc/20532-brown-keltir/live",
+      "minAdena": 18,
+      "maxAdena": 31,
+      "chance": 70,
+      "avgAdena": 25
+    },
+    {
+      "id": 20535,
+      "name": "Степной Шакал",
+      "level": "Ур. 2",
+      "href": "/npc/20535-prairie-keltir/live",
+      "minAdena": 18,
+      "maxAdena": 31,
+      "chance": 70,
+      "avgAdena": 25
+    },
+    {
+      "id": 22231,
+      "name": "Матерый Серый Шакал",
+      "level": "Ур. 3",
+      "href": "/npc/22231-dominant-grey-keltir/live",
+      "minAdena": 22,
+      "maxAdena": 38,
+      "chance": 70,
+      "avgAdena": 30
+    },
+    {
+      "id": 20537,
+      "name": "Матерый Рыжий Шакал",
+      "level": "Ур. 3",
+      "href": "/npc/20537-elder-red-keltir/live",
+      "minAdena": 22,
+      "maxAdena": 38,
+      "chance": 70,
+      "avgAdena": 30
+    },
+    {
+      "id": 20536,
+      "name": "Матерый Бурый Шакал",
+      "level": "Ур. 3",
+      "href": "/npc/20536-elder-brown-keltir/live",
+      "minAdena": 22,
+      "maxAdena": 38,
+      "chance": 70,
+      "avgAdena": 30
+    }
+  ]
+}

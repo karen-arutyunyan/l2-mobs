@@ -1,0 +1,118 @@
+[
+  {
+    "file": "npc_20038.html",
+    "mobId": "20038",
+    "stats": {
+      "level": 8,
+      "respawnTime": 5,
+      "hp": 150,
+      "mp": 45,
+      "pAtk": 18,
+      "mAtk": 8,
+      "pDef": 55,
+      "mDef": 40,
+      "accuracy": 42,
+      "evasion": 38,
+      "exp": 185,
+      "sp": 25,
+      "attackAttribute": "No Attack Attribute",
+      "defenceAttribute": 15,
+      "defenceAttributes": {
+        "Fire": 15,
+        "Water": 25,
+        "Wind": 35,
+        "Earth": 15,
+        "Holy": 10,
+        "Unholy": 20
+      }
+    },
+    "success": true
+  },
+  {
+    "file": "npc_20050.html",
+    "mobId": "20050",
+    "stats": {
+      "level": 4,
+      "respawnTime": 12,
+      "hp": 65,
+      "mp": 38,
+      "pAtk": 12,
+      "mAtk": 5,
+      "pDef": 40,
+      "mDef": 30,
+      "accuracy": 35,
+      "evasion": 30,
+      "exp": 78,
+      "sp": 12,
+      "attackAttribute": "No Attack Attribute",
+      "defenceAttribute": 22,
+      "defenceAttributes": {
+        "Fire": 22,
+        "Water": 22,
+        "Wind": 45,
+        "Earth": 22,
+        "Holy": 18,
+        "Unholy": 22
+      }
+    },
+    "success": true
+  },
+  {
+    "file": "npc_20120.html",
+    "mobId": "20120",
+    "stats": {
+      "level": 5,
+      "respawnTime": 8,
+      "hp": 75,
+      "mp": 55,
+      "pAtk": 14,
+      "mAtk": 6,
+      "pDef": 42,
+      "mDef": 35,
+      "accuracy": 50,
+      "evasion": 32,
+      "exp": 125,
+      "sp": 18,
+      "attackAttribute": "No Attack Attribute",
+      "defenceAttribute": 18,
+      "defenceAttributes": {
+        "Fire": 18,
+        "Water": 18,
+        "Wind": 40,
+        "Earth": 18,
+        "Holy": 25,
+        "Unholy": 15
+      }
+    },
+    "success": true
+  },
+  {
+    "file": "npc_20537.html",
+    "mobId": "20537",
+    "stats": {
+      "level": 3,
+      "respawnTime": 9,
+      "hp": 90,
+      "mp": 67,
+      "pAtk": 10,
+      "mAtk": 4,
+      "pDef": 44,
+      "mDef": 33,
+      "accuracy": 36,
+      "evasion": 36,
+      "exp": 99,
+      "sp": 10,
+      "attackAttribute": "No Attack Attribute",
+      "defenceAttribute": 20,
+      "defenceAttributes": {
+        "Fire": 20,
+        "Water": 20,
+        "Wind": 53,
+        "Earth": 20,
+        "Holy": 20,
+        "Unholy": 20
+      }
+    },
+    "success": true
+  }
+]

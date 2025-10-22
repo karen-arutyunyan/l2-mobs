@@ -1,0 +1,48 @@
+{
+  "id": 20537,
+  "name": "Elder Red Keltir",
+  "stats": {
+    "Level": 3,
+    "Respawn Time": 9,
+    "HP": 90,
+    "MP": 67,
+    "P.Atk.": 10,
+    "M.Atk.": 4,
+    "P.Def.": 44,
+    "M.Def.": 33,
+    "Accuracy": 36,
+    "Evasion": 36,
+    "EXP": 99,
+    "SP": 10,
+    "Attack Attribute": "No Attack Attribute",
+    "Defence Attribute": 20,
+    "Defence Attributes": {
+      "Fire": 20,
+      "Water": 20,
+      "Wind": 53,
+      "Earth": 20,
+      "Holy": 20,
+      "Unholy": 20
+    }
+  },
+  "level": 3,
+  "hp": 90,
+  "mp": 67,
+  "exp": 99,
+  "sp": 10,
+  "pAtk": 10,
+  "mAtk": 4,
+  "pDef": 44,
+  "mDef": 33,
+  "accuracy": 36,
+  "evasion": 36,
+  "respawnTime": 9,
+  "defenceAttributes": {
+    "Fire": 20,
+    "Water": 20,
+    "Wind": 53,
+    "Earth": 20,
+    "Holy": 20,
+    "Unholy": 20
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Elder Red Keltir",
+    "npcPath": "20537-elder-red-keltir",
+    "stats": {},
+    "error": "Request failed with status code 404"
+  },
+  {
+    "name": "Орк",
+    "npcPath": "20130-orc",
+    "stats": {},
+    "error": "Request failed with status code 404"
+  },
+  {
+    "name": "Древесный Волк Кхаши",
+    "npcPath": "20477-kasha-timber-wolf",
+    "stats": {},
+    "error": "Request failed with status code 404"
+  }
+]
