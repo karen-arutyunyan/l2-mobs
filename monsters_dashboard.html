@@ -68,11 +68,56 @@
             animation: slideUp 0.6s ease;
         }
 
+        .filters-group {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(99, 102, 241, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .filters-group:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .filters-group:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .filters-group-title {
+            font-size: 0.85em;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .filters-group:hover .filters-group-title {
+            color: var(--secondary);
+            border-bottom-color: rgba(236, 72, 153, 0.3);
+        }
+
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
+        }
+
+        .filters-group .controls-grid {
+            margin-bottom: 0;
+        }
+
+        /* Компактный блок для уровней */
+        .filters-group:has(.control-group input[type="number"]) .controls-grid {
+            grid-template-columns: 1fr 1fr;
         }
 
         .control-group {
@@ -87,6 +132,9 @@
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .control-group input,
@@ -144,11 +192,13 @@
             background: var(--bg);
             color: var(--text);
             border: 1px solid var(--border);
+            margin-left: 0;
         }
 
         .btn-secondary:hover {
-            background: var(--border);
-            border-color: var(--primary);
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--danger);
+            color: var(--danger);
         }
 
         .stats-row {
@@ -491,10 +541,98 @@
             }
         }
 
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            padding: 8px 12px;
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        /* Modern toggle checkbox style */
+        .checkbox-item input[type="checkbox"] {
+            appearance: none;
+            width: 40px;
+            height: 24px;
+            background: var(--border);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked {
+            background: var(--primary);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked::before {
+            left: 18px;
+        }
+
+        .checkbox-item label {
+            color: var(--text);
+            font-size: 0.95em;
+            text-transform: none;
+            letter-spacing: 0;
+            cursor: pointer;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            margin: 0;
+            font-weight: 500;
+        }
+
         .filters-info {
-            color: var(--text-muted);
+            color: var(--primary);
             font-size: 0.9em;
-            margin-top: 15px;
+            margin-top: 20px;
+            padding: 12px 15px;
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 3px solid var(--primary);
+            border-radius: 4px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @media (max-width: 768px) {
@@ -561,44 +699,55 @@
         </header>
 
         <div class="controls-section">
-            <div class="controls-grid">
-                <div class="control-group">
-                    <label for="searchInput">🔍 Поиск по названию монстра</label>
-                    <input type="text" id="searchInput" placeholder="Введите название монстра...">
-                </div>
+            <!-- Группа: Поиск -->
+            <div class="filters-group">
+                <div class="filters-group-title">🔍 Поиск</div>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="searchInput">По названию монстра</label>
+                        <input type="text" id="searchInput" placeholder="Введите название...">
+                    </div>
 
-                <div class="control-group">
-                    <label for="searchItemInput">📦 Поиск по названию предмета</label>
-                    <input type="text" id="searchItemInput" placeholder="Поиск предмета в дропах/спойлах...">
+                    <div class="control-group">
+                        <label for="searchItemInput">По названию предмета</label>
+                        <input type="text" id="searchItemInput" placeholder="Поиск в дропах/спойлах...">
+                    </div>
                 </div>
+            </div>
 
-                <div class="control-group">
-                    <label for="minLevelFilter">📊 Минимальный уровень</label>
-                    <input type="number" id="minLevelFilter" placeholder="Мин. уровень" min="1" max="88">
+            <!-- Группа: Фильтры -->
+            <div class="filters-group">
+                <div class="filters-group-title">📊 Уровень</div>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="minLevelFilter">Минимальный уровень</label>
+                        <input type="number" id="minLevelFilter" placeholder="1" min="1" max="88">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="maxLevelFilter">Максимальный уровень</label>
+                        <input type="number" id="maxLevelFilter" placeholder="88" min="1" max="88">
+                    </div>
                 </div>
+            </div>
 
-                <div class="control-group">
-                    <label for="maxLevelFilter">📊 Максимальный уровень</label>
-                    <input type="number" id="maxLevelFilter" placeholder="Макс. уровень" min="1" max="88">
-                </div>
-
-                <div class="control-group">
-                    <label for="sortBy">🔄 Сортировка</label>
-                    <select id="sortBy">
-                        <option value="name">По названию</option>
-                        <option value="level">По уровню</option>
-                        <option value="adena">По адене (убывание)</option>
-                        <option value="adena-asc">По адене (возрастание)</option>
-                        <option value="efficiency">По эффективности (адена/HP)</option>
-                        <option value="hpMultiplier">По HP Multiplier</option>
-                        <option value="hp">По здоровью</option>
-                    </select>
+            <!-- Группа: Типы монстров -->
+            <div class="filters-group">
+                <div class="filters-group-title">⚙️ Типы монстров</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="showTreasureChest">
+                        <label for="showTreasureChest">🗺️ Показать сундуки (Treasure Chest)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="showHarbinger">
+                        <label for="showHarbinger">⭐ Показать Harbinger</label>
+                    </div>
                 </div>
             </div>
 
             <div class="buttons-group">
-                <button class="btn-primary" onclick="applyFilters()">✓ Применить фильтры</button>
-                <button class="btn-secondary" onclick="resetFilters()">↺ Сбросить</button>
+                <button class="btn-secondary" onclick="resetFilters()">↺ Сбросить все фильтры</button>
             </div>
 
             <div class="stats-row">
@@ -751,7 +900,8 @@
             currentItemSearch = itemSearch; // Сохраняем для использования в renderTable
             const minLevel = parseInt(document.getElementById('minLevelFilter').value) || 0;
             const maxLevel = parseInt(document.getElementById('maxLevelFilter').value) || 999;
-            const sortBy = document.getElementById('sortBy').value;
+            const showTreasureChest = document.getElementById('showTreasureChest').checked;
+            const showHarbinger = document.getElementById('showHarbinger').checked;
 
             // Показываем/скрываем столбец шанса в зависимости от поиска по предмету
             document.getElementById('itemChanceHeader').style.display = itemSearch ? 'table-cell' : 'none';
@@ -763,14 +913,21 @@
                 // Если поиск по предмету активен, фильтруем только монстров с этим предметом
                 const matchesItem = !itemSearch || findItemInDrops(monster, itemSearch) !== null;
                 
-                return matchesSearch && matchesLevel && matchesItem;
+                // Фильтрация по isTreasureChest и isHarbinger
+                const isTreasureChest = monster.attributes?.isTreasureChest || false;
+                const isHarbinger = monster.attributes?.isHarbinger || false;
+                
+                const matchesTreasureChest = !isTreasureChest || showTreasureChest;
+                const matchesHarbinger = !isHarbinger || showHarbinger;
+                
+                return matchesSearch && matchesLevel && matchesItem && matchesTreasureChest && matchesHarbinger;
             });
 
             // Обновляем информацию о фильтрах
-            updateFiltersInfo(search, minLevel, maxLevel, itemSearch);
+            updateFiltersInfo(search, minLevel, maxLevel, itemSearch, showTreasureChest, showHarbinger);
 
-            // Сортировка
-            sortMonsters(sortBy);
+            // Сортировка (сохраняем текущую сортировку, не сбрасываем)
+            sortMonsters(currentSort);
             
             // Пагинация
             currentPage = 1;
@@ -781,17 +938,24 @@
             updateStats();
         }
 
-        function updateFiltersInfo(search, minLevel, maxLevel, itemSearch) {
+        function updateFiltersInfo(search, minLevel, maxLevel, itemSearch, showTreasureChest, showHarbinger) {
             let info = [];
             if (search) info.push(`🔍 Монстр: "${search}"`);
             if (itemSearch) info.push(`📦 Предмет: "${itemSearch}"`);
             if (minLevel > 0 || maxLevel < 999) {
                 info.push(`📊 Уровень: ${minLevel === 0 ? '1' : minLevel} - ${maxLevel === 999 ? '∞' : maxLevel}`);
             }
+            if (!showTreasureChest) info.push(`🗺️ Сундуки скрыты`);
+            if (!showHarbinger) info.push(`⭐ Harbinger скрыты`);
             
             const infoEl = document.getElementById('filtersInfo');
             if (info.length > 0) {
-                infoEl.textContent = 'Активные фильтры: ' + info.join(' • ');
+                // Перезагружаем анимацию при каждом обновлении
+                infoEl.style.animation = 'none';
+                setTimeout(() => {
+                    infoEl.textContent = 'Активные фильтры: ' + info.join(' • ');
+                    infoEl.style.animation = '';
+                }, 10);
             } else {
                 infoEl.textContent = '';
             }
@@ -1055,17 +1219,21 @@
             document.getElementById('searchItemInput').value = '';
             document.getElementById('minLevelFilter').value = '';
             document.getElementById('maxLevelFilter').value = '';
-            document.getElementById('sortBy').value = 'name';
+            document.getElementById('showTreasureChest').checked = false;
+            document.getElementById('showHarbinger').checked = false;
             document.getElementById('filtersInfo').textContent = '';
             applyFilters();
         }
 
-        // Обработчик Enter для поиска по предмету
-        document.getElementById('searchItemInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                applyFilters();
-            }
-        });
+        // Живой поиск - применяем фильтры по мере ввода
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('searchItemInput').addEventListener('input', applyFilters);
+        document.getElementById('minLevelFilter').addEventListener('input', applyFilters);
+        document.getElementById('maxLevelFilter').addEventListener('input', applyFilters);
+
+        // Обработчики для чекбоксов фильтров - мгновенное применение
+        document.getElementById('showTreasureChest').addEventListener('change', applyFilters);
+        document.getElementById('showHarbinger').addEventListener('change', applyFilters);
 
         // Загрузка данных при открытии страницы
         loadData();
