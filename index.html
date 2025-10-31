@@ -1,586 +1,345 @@
+ н
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L2 Monsters Dashboard - Анализ эффективности фарма</title>
+    <title>Анализ спойла Lineage 2</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg: #0f172a;
-            --bg-light: #1e293b;
-            --border: #334155;
-            --text: #f1f5f9;
-            --text-muted: #cbd5e1;
+            --primary: #673ab7;
+            --primary-dark: #512da8;
+            --secondary: #03a9f4;
+            --secondary-dark: #0288d1;
+            --bg-light: #f5f5f5;
+            --bg-dark: #212121;
+            --text-light: #fff;
+            --text-dark: #212121;
+            --text-muted: #757575;
+            --success: #4caf50;
+            --error: #f44336;
         }
 
-        body {
-            background: linear-gradient(135deg, var(--bg) 0%, #1e1b4b 100%);
-            color: var(--text);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: var(--bg-light);
+            margin: 5% auto; /* 5% from the top and centered */
             padding: 20px;
+            border: 1px solid #888;
+            width: 90%; /* Could be more or less, depending on screen size */
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        /* The Close Button */
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: slideDown 0.6s ease;
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        header h1 {
-            font-size: 2.5em;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        #priceInputFields {
+            margin-bottom: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .spoil-chance-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(103, 58, 183, 0.05);
+            border: 1px solid rgba(103, 58, 183, 0.2);
+            border-radius: 8px;
+        }
+
+        .spoil-chance-section label {
+            font-weight: 600;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .spoil-chance-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        .spoil-chance-section input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(103, 58, 183, 0.5);
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s ease;
             margin-bottom: 10px;
         }
 
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1em;
+        .price-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
-        .controls-section {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            animation: slideUp 0.6s ease;
-        }
-
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .control-group label {
-            font-weight: 600;
+        .price-item-label {
+            flex: 1;
+            font-weight: 500;
             color: var(--primary);
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 14px;
         }
 
-        .control-group input,
-        .control-group select {
-            padding: 12px 15px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1em;
-            transition: all 0.3s ease;
+        .price-item-input {
+            width: 80px;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: right;
         }
 
-        .control-group input:focus,
-        .control-group select:focus {
+        .price-item-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 5px rgba(103, 58, 183, 0.3);
         }
 
-        .control-group input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .buttons-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
+        #priceInputFields label {
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            color: var(--primary);
             font-size: 0.9em;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--border);
-            border-color: var(--primary);
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .stat-card .label {
-            color: var(--text-muted);
-            font-size: 0.85em;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .stat-card .value {
-            font-size: 1.8em;
-            font-weight: bold;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .table-wrapper {
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.6s ease;
-        }
-
-        table {
+        #priceInputFields input {
             width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: rgba(99, 102, 241, 0.15);
-            border-bottom: 2px solid var(--border);
-        }
-
-        th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-        }
-
-        th:hover {
-            background: rgba(99, 102, 241, 0.25);
-            color: var(--secondary);
-        }
-
-        th.sortable::after {
-            content: ' ⇅';
-            opacity: 0.5;
-        }
-
-        th.sorted-asc::after {
-            content: ' ↑';
-            opacity: 1;
-            color: var(--primary);
-        }
-
-        th.sorted-desc::after {
-            content: ' ↓';
-            opacity: 1;
-            color: var(--primary);
-        }
-
-        tbody tr {
-            border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        tbody tr:hover {
-            background: rgba(99, 102, 241, 0.08);
-        }
-
-        tbody tr.expandable {
-            cursor: pointer;
-        }
-
-        tbody tr.expandable:hover {
-            background: rgba(99, 102, 241, 0.15);
-        }
-
-        td {
-            padding: 12px 15px;
-            font-size: 0.95em;
-        }
-
-        .expand-btn {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid var(--border);
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            text-align: center;
-            line-height: 22px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            user-select: none;
+            box-sizing: border-box;
+            font-size: 1em;
         }
 
-        .expand-btn:hover {
-            background: var(--primary);
+        #priceInputFields input:focus {
+            outline: none;
             border-color: var(--primary);
-            color: white;
-        }
-
-        .drops-details {
-            display: none;
-        }
-
-        .drops-details.show {
-            display: table-row;
-        }
-
-        .drops-container {
-            padding: 20px;
-            background: rgba(99, 102, 241, 0.05);
-            border-radius: 8px;
-        }
-
-        .drops-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-        }
-
-        .drop-item {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .drop-item:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-        }
-
-        .drop-name {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-size: 0.95em;
-        }
-
-        .drop-info {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            font-size: 0.85em;
-            color: var(--text-muted);
-        }
-
-        .drop-amount {
-            color: var(--warning);
-        }
-
-        .drop-chance {
-            color: var(--success);
-        }
-
-        .drops-empty {
-            color: var(--text-muted);
-            text-align: center;
-            padding: 20px;
-        }
-
-        .monster-name {
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            font-weight: 600;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .adena-value {
-            color: var(--success);
-            font-weight: 600;
-        }
-
-        .efficiency-value {
-            color: var(--warning);
-            font-weight: 600;
-        }
-
-        .hp-value {
-            color: var(--text-muted);
-        }
-
-        .hp-multiplier-value {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .hp-multiplier-value.boosted {
-            color: var(--secondary);
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.8;
-            }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-        }
-
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--danger);
-            border-radius: 8px;
-            padding: 15px;
-            color: #fca5a5;
-            margin-bottom: 20px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-        }
-
-        .empty-state p {
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .pagination button {
-            padding: 8px 12px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .pagination button.active {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .pagination-info {
-            text-align: center;
-            color: var(--text-muted);
-            margin-top: 15px;
-            font-size: 0.9em;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .filters-info {
-            color: var(--text-muted);
-            font-size: 0.9em;
-            margin-top: 15px;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-
-            .controls-grid {
-                grid-template-columns: 1fr;
-            }
-
-            table {
-                font-size: 0.85em;
-            }
-
-            td, th {
-                padding: 8px 10px;
-            }
-
-            .stat-card .value {
-                font-size: 1.4em;
-            }
-        }
-
-        .scroll-hint {
-            color: var(--text-muted);
-            font-size: 0.85em;
-            text-align: center;
-            padding: 10px 0;
+            box-shadow: 0 0 5px rgba(103, 58, 183, 0.5);
         }
 
         .wiki-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 8px;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--secondary);
+            color: var(--text-light);
             text-decoration: none;
-            color: var(--primary);
-            font-size: 0.9em;
-            font-weight: 600;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
         }
 
         .wiki-link:hover {
-            background: var(--primary);
-            border-color: var(--primary);
+            background-color: var(--secondary-dark);
+        }
+
+        .btn-accent {
+            background-color: var(--success);
             color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: #388e3c;
+        }
+
+        .spoil-section {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .spoil-section h2 {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .spoil-summary {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .spoil-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .spoil-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .spoil-result-card {
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .spoil-result-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .spoil-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .spoil-monster-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spoil-monster-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .spoil-monster-name:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .spoil-value {
+            font-size: 1.1rem;
+            color: var(--success);
+            cursor: help;
+            position: relative;
+        }
+
+        .spoil-value:hover::after {
+            content: attr(data-per-hp);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        .spoil-contributions {
+            /* Styles for contributions */
+        }
+
+        .spoil-contribution {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .spoil-contribution-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .spoil-contribution-info {
+            color: var(--text-muted);
+        }
+
+        .spoil-empty {
+            color: var(--text-muted);
+            font-style: italic;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>⚔️ L2 Monsters Dashboard</h1>
-            <p>Интерактивный анализ эффективности фарма - фильтрация, поиск и сортировка</p>
+            <h1>Анализ спойла Lineage 2</h1>
+            <p>Анализ эффективности фарма на основе данных с wiki1.mw2.wiki</p>
         </header>
 
         <div class="controls-section">
             <div class="controls-grid">
                 <div class="control-group">
-                    <label for="searchInput">🔍 Поиск по названию монстра</label>
-                    <input type="text" id="searchInput" placeholder="Введите название монстра...">
+                    <label for="searchInput">🔍 Поиск монстра:</label>
+                    <input type="text" id="searchInput" placeholder="Название монстра">
+                </div>
+                <div class="control-group">
+                    <label for="searchItemInput">📦 Поиск предмета:</label>
+                    <input type="text" id="searchItemInput" placeholder="Название предмета">
+                </div>
+                <div class="control-group">
+                    <label for="minLevelFilter">📊 Диапазон уровней</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="number" id="minLevelFilter" placeholder="Мин." min="1" max="88" style="width: 80px;">
+                        <span>-</span>
+                        <input type="number" id="maxLevelFilter" placeholder="Макс." min="1" max="88" style="width: 80px;">
+                    </div>
                 </div>
 
-                <div class="control-group">
-                    <label for="searchItemInput">📦 Поиск по названию предмета</label>
-                    <input type="text" id="searchItemInput" placeholder="Поиск предмета в дропах/спойлах...">
-                </div>
 
-                <div class="control-group">
-                    <label for="minLevelFilter">📊 Минимальный уровень</label>
-                    <input type="number" id="minLevelFilter" placeholder="Мин. уровень" min="1" max="88">
-                </div>
-
-                <div class="control-group">
-                    <label for="maxLevelFilter">📊 Максимальный уровень</label>
-                    <input type="number" id="maxLevelFilter" placeholder="Макс. уровень" min="1" max="88">
-                </div>
 
                 <div class="control-group">
                     <label for="sortBy">🔄 Сортировка</label>
@@ -594,38 +353,43 @@
                         <option value="hp">По здоровью</option>
                     </select>
                 </div>
+
+
+
+
             </div>
 
             <div class="buttons-group">
                 <button class="btn-primary" onclick="applyFilters()">✓ Применить фильтры</button>
                 <button class="btn-secondary" onclick="resetFilters()">↺ Сбросить</button>
+                <button class="btn-secondary" onclick="openPriceInputModal()">💰 Ввести цены на предметы</button>
+                <button class="btn-accent" onclick="calculateSpoilEfficiency()">💎 Анализ спойла</button>
             </div>
 
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="label">Всего монстров</div>
-                    <div class="value" id="totalMonstersCount">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Найдено</div>
-                    <div class="value" id="filteredCount">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Средняя адена</div>
-                    <div class="value" id="avgAdena">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Лучшая эффективность</div>
-                    <div class="value" id="bestEfficiency">0</div>
-                </div>
-            </div>
+            <div id="filtersInfo" class="filters-info"></div>
+        </div>
 
-            <div class="filters-info" id="filtersInfo"></div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <span class="label">Монстров всего:</span>
+                <span class="value" id="totalMonstersCount">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">Отфильтровано:</span>
+                <span class="value" id="filteredCount">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">Средняя адена:</span>
+                <span class="value" id="avgAdena">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">Самая выгодная эффективность:</span>
+                <span class="value" id="bestEfficiency">0</span>
+            </div>
         </div>
 
         <div class="table-wrapper">
-            <div class="loading" id="loading">⏳ Загрузка данных монстров...</div>
-            <table id="monstersTable" style="display: none;">
+            <table id="monstersTable">
                 <thead>
                     <tr>
                         <th style="width: 40px;"></th>
@@ -638,35 +402,368 @@
                         <th class="sortable" onclick="sortTable('exp')">Опыт</th>
                         <th class="sortable" onclick="sortTable('exp-efficiency')">Опыт/HP</th>
                         <th id="itemChanceHeader" style="display: none;">Шанс предмета</th>
-                        <th>Информация</th>
                     </tr>
                 </thead>
-                <tbody id="monstersBody">
+                <tbody>
+                    <!-- Table rows will be added here -->
                 </tbody>
             </table>
         </div>
 
-        <div class="pagination" id="pagination"></div>
-        <div class="pagination-info" id="paginationInfo"></div>
+        <div id="pagination" class="pagination"></div>
+        <div id="paginationInfo" class="pagination-info"></div>
+        <div class="wiki-link"><a href="https://wiki1.mw2.wiki/w/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0" target="_blank">База данных Lineage 2 Wiki</a></div>
     </div>
+        <div id="priceInputModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-button" onclick="closePriceInputModal()">×</span>
+                <h2>💰 Введите цены на предметы</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Установите цены для всех предметов спойла. Пустые поля будут игнорироваться.</p>
+                <div id="priceInputFields">
+                    <!-- Item price input fields will be added here -->
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                    <button class="btn-secondary" onclick="closePriceInputModal()">Отмена</button>
+                    <button class="btn-primary" onclick="saveItemPrices()">✓ Сохранить цены</button>
+                </div>
+            </div>
+        </div>
+
 
     <script>
-        const ITEMS_PER_PAGE = 25;
+        const ITEMS_PER_PAGE = 20;
+        const PRICE_STORAGE_KEY = 'l2_mob_prices';
+        const SPOIL_SUCCESS_RATE_KEY = 'l2_spoil_success_rate';
+        const NUMBER_FORMATTER = new Intl.NumberFormat('ru-RU');
+        const PRICE_FORMATTER = new Intl.NumberFormat('ru-RU', {
+            style: 'currency',
+            currency: 'RUB', // TODO: make it configurable
+            maximumFractionDigits: 2
+        });
+
+        let priceCache = {};
+        let spoilSuccessRate = 80; // Default 80%
         let allMonsters = [];
         let filteredMonsters = [];
         let currentPage = 1;
         let currentSort = 'name';
         let sortDirection = 'asc';
-        let currentItemSearch = ''; // Текущий поиск по предмету
+        let currentItemSearch = '';
 
-        // Загрузка данных при открытии страницы
+        function loadPriceCache() {
+            const raw = localStorage.getItem(PRICE_STORAGE_KEY);
+            const parsed = raw ? JSON.parse(raw) : {};
+            // Convert all values to numbers
+            const num = {};
+            for (const key in parsed) {
+                if (parsed.hasOwnProperty(key)) {
+                    num[key] = Number(parsed[key]);
+                }
+            }
+            priceCache = num;
+        }
+
+        function persistPriceCache() {
+            localStorage.setItem(PRICE_STORAGE_KEY, JSON.stringify(priceCache));
+        }
+
+
+
+        function loadSpoilSuccessRate() {
+            const raw = localStorage.getItem(SPOIL_SUCCESS_RATE_KEY);
+            spoilSuccessRate = raw ? Number(raw) : 100; // Default to 100% since we're using individual monster chances
+        }
+
+        function persistSpoilSuccessRate() {
+            localStorage.setItem(SPOIL_SUCCESS_RATE_KEY, spoilSuccessRate);
+        }
+
+
+        function openPriceInputModal() {
+            const modal = document.getElementById('priceInputModal');
+            const priceInputFields = document.getElementById('priceInputFields');
+
+            priceInputFields.innerHTML = ''; // Clear previous inputs
+
+            // Get all unique spoil item names from current filtered monsters
+            const itemNames = new Set();
+            filteredMonsters.forEach(monster => {
+                (monster.spoils || []).forEach(spoil => {
+                    itemNames.add(spoil.name);
+                });
+            });
+
+            // Separate items with prices and without
+            const itemsWithPrices = [];
+            const itemsWithoutPrices = [];
+
+            Array.from(itemNames).forEach(itemName => {
+                if (priceCache[itemName] !== undefined && priceCache[itemName] !== null) {
+                    itemsWithPrices.push(itemName);
+                } else {
+                    itemsWithoutPrices.push(itemName);
+                }
+            });
+
+            // Sort both arrays alphabetically
+            itemsWithPrices.sort();
+            itemsWithoutPrices.sort();
+
+            // Combine: items with prices first, then without
+            const sortedItems = [...itemsWithPrices, ...itemsWithoutPrices];
+
+            if (sortedItems.length === 0) {
+                priceInputFields.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">В выбранном диапазоне уровней нет предметов спойла. Измените фильтры уровней.</div>';
+            } else {
+                // Add search input at the top
+                const searchDiv = document.createElement('div');
+                searchDiv.style.marginBottom = '20px';
+                searchDiv.innerHTML = `
+                    <input type="text" id="priceItemSearch" placeholder="🔍 Поиск предметов..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                `;
+                priceInputFields.appendChild(searchDiv);
+
+                // Create container for items
+                const itemsContainer = document.createElement('div');
+                itemsContainer.id = 'priceItemsContainer';
+                itemsContainer.style.maxHeight = '400px';
+                itemsContainer.style.overflowY = 'auto';
+                priceInputFields.appendChild(itemsContainer);
+
+                // Function to render items
+                function renderPriceItems(items) {
+                    itemsContainer.innerHTML = '';
+                    items.forEach(itemName => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'price-item';
+                        itemDiv.dataset.itemName = itemName;
+
+                        const hasPrice = priceCache[itemName] !== undefined && priceCache[itemName] !== null;
+                        itemDiv.style.borderLeft = hasPrice ? '4px solid var(--success)' : '4px solid var(--text-muted)';
+
+                        const label = document.createElement('div');
+                        label.className = 'price-item-label';
+                        label.textContent = itemName;
+                        label.style.fontWeight = hasPrice ? '600' : '500';
+
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.className = 'price-item-input';
+                        input.id = itemName + 'Price';
+                        input.placeholder = '0';
+                        input.value = priceCache[itemName] || '';
+                        input.min = '0';
+                        input.step = '0.01';
+
+                        itemDiv.appendChild(label);
+                        itemDiv.appendChild(input);
+                        itemsContainer.appendChild(itemDiv);
+                    });
+                }
+
+                // Initial render
+                renderPriceItems(sortedItems);
+
+                // Add search functionality
+                const searchInput = document.getElementById('priceItemSearch');
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const filteredItems = sortedItems.filter(item =>
+                        item.toLowerCase().includes(searchTerm)
+                    );
+                    renderPriceItems(filteredItems);
+                });
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closePriceInputModal() {
+            const modal = document.getElementById('priceInputModal');
+            modal.style.display = 'none';
+        }
+
+        function saveItemPrices() {
+            const priceInputFields = document.getElementById('priceInputFields');
+            const inputs = priceInputFields.querySelectorAll('input[type="number"]');
+            let updated = {};
+
+            inputs.forEach(input => {
+                const name = input.id.replace('Price', ''); // Get resource name from input id
+                const value = parseFloat(input.value);
+                if (!isNaN(value)) {
+                    updated[name] = value;
+                }
+            });
+
+            // Merge with existing priceCache
+            priceCache = { ...priceCache, ...updated };
+            persistPriceCache();
+            closePriceInputModal();
+        }
+
+
+
+
+        function parseChance(chanceStr) {
+            let str = chanceStr.replace('%', '').replace(',', '.');
+            const num = Number(str);
+            if (!isNaN(num)) {
+                return num / 100;
+            }
+
+            // Попытка распарсить дробь (1/2, 1/3 и т.д.)
+            const parts = str.split('/');
+            if (parts.length === 2) {
+                const numerator = Number(parts[0]);
+                const denominator = Number(parts[1]);
+                if (!isNaN(numerator) && !isNaN(denominator) && denominator !== 0) {
+                    return numerator / denominator;
+                }
+            }
+            return 0; // Или обработать ошибку парсинга
+        }
+
+        function parseAmount(amountStr) {
+            const sanitized = amountStr.replace(/[^0-9.,xх\-]+/g, ''); // Remove all except numbers, dots, commas, x, х and -
+            const parts = sanitized.split(/[xх]+/); // Split by x or х
+
+            // Handle ranges like "1 - 2" or "5 - 39"
+            if (parts[0].includes('-')) {
+                const rangeParts = parts[0].split('-').map(p => Number(p.trim().replace(',', '.')));
+                const multiplier = parts.length > 1 ? Number(parts[1].replace(',', '.')) : 1;
+
+                const min = Math.min(...rangeParts) * multiplier;
+                const max = Math.max(...rangeParts) * multiplier;
+
+                return { min: min, max: max, avg: (min + max) / 2 };
+            } else {
+                // Single value
+                const first = Number(parts[0].replace(',', '.'));
+                const second = parts.length > 1 ? Number(parts[1].replace(',', '.')) : 1;
+                const value = first * second;
+                return { min: value, max: value, avg: value };
+            }
+        }
+
+        function calculateSpoilEfficiency() {
+            const minLevel = parseInt(document.getElementById('minLevelFilter').value) || 1;
+            const maxLevel = parseInt(document.getElementById('maxLevelFilter').value) || 88;
+
+            if (minLevel > maxLevel) {
+                alert('Минимальный уровень не может быть больше максимального');
+                return;
+            }
+
+            const monsters = filteredMonsters.filter(monster =>
+                monster.spoils &&
+                monster.spoils.length > 0
+            );
+
+            if (monsters.length === 0) {
+                alert(`В отфильтрованном списке нет монстров со спойлом`);
+                return;
+            }
+
+            const results = monsters.map(monster => {
+                let totalMinValue = 0;
+                let totalMaxValue = 0;
+                let totalAvgValue = 0;
+                let relevantSpoils = [];
+
+                monster.spoils.forEach(spoil => {
+                    const chance = parseChance(spoil.chance);
+                    const amount = parseAmount(spoil.amount);
+                    const resourceName = spoil.name;
+                    const price = priceCache[resourceName] || 0;
+
+                    // Calculate expected values: individual monster spoil chance * amount * price
+                    const expectedMin = chance * amount.min * price;
+                    const expectedMax = chance * amount.max * price;
+                    const expectedAvg = chance * amount.avg * price;
+
+                    totalMinValue += expectedMin;
+                    totalMaxValue += expectedMax;
+                    totalAvgValue += expectedAvg;
+
+                    relevantSpoils.push({
+                        ...spoil,
+                        parsedAmount: amount,
+                        effectiveChance: chance
+                    });
+                });
+
+                return {
+                    monster: monster,
+                    minValue: totalMinValue,
+                    maxValue: totalMaxValue,
+                    avgValue: totalAvgValue,
+                    relevantSpoils: relevantSpoils
+                };
+            }).filter(item => item.avgValue > 0).sort((a, b) => b.avgValue - a.avgValue);
+
+            renderSpoilResults(results, minLevel, maxLevel);
+        }
+
+        function renderSpoilResults(results, minLevel, maxLevel) {
+            // Create or update spoil results section
+            let spoilSection = document.querySelector('.spoil-section');
+            if (!spoilSection) {
+                spoilSection = document.createElement('div');
+                spoilSection.className = 'spoil-section';
+                document.querySelector('.container').appendChild(spoilSection);
+            }
+
+            const levelRange = minLevel === maxLevel ? `Уровень ${minLevel}` : `Уровни ${minLevel}-${maxLevel}`;
+
+            spoilSection.innerHTML = `
+                <h2>💎 Анализ спойла - ${levelRange}</h2>
+                <p class="spoil-summary">Найдено ${results.length} монстров со спойлом в выбранном диапазоне</p>
+                <div class="spoil-results">
+                    ${results.length === 0 ? '<div class="spoil-empty">Монстры со спойлом не найдены</div>' :
+                        results.map(result => {
+                            const perHpMin = result.monster.hp ? result.minValue / result.monster.hp : 0;
+                            const perHpMax = result.monster.hp ? result.maxValue / result.monster.hp : 0;
+                            const perHpAvg = result.monster.hp ? result.avgValue / result.monster.hp : 0;
+                            const perHpText = `${PRICE_FORMATTER.format(perHpMin)} - ${PRICE_FORMATTER.format(perHpMax)}/HP (средн. ${PRICE_FORMATTER.format(perHpAvg)})`;
+
+                            const wikiUrl = `https://wiki1.mw2.wiki${result.monster.href}`;
+
+                            return `
+                            <div class="spoil-result-card">
+                                <div class="spoil-result-header">
+                                    <div class="spoil-monster-info">
+                                        <div class="spoil-monster-name" onclick="window.open('${wikiUrl}', '_blank')" title="Открыть в базе данных Lineage 2 Wiki">${result.monster.name} (Lv.${result.monster.level})</div>
+                                        <div class="spoil-value" data-per-hp="${perHpText}">${PRICE_FORMATTER.format(result.minValue)} - ${PRICE_FORMATTER.format(result.maxValue)} (средн. ${PRICE_FORMATTER.format(result.avgValue)})</div>
+                                    </div>
+                                </div>
+                                <div class="spoil-contributions">
+                                    ${result.relevantSpoils.map(spoil => `
+                                        <div class="spoil-contribution">
+                                            <span class="spoil-contribution-name">${spoil.name}</span>
+                                            <span class="spoil-contribution-info">${spoil.amount} (${spoil.chance})</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `}).join('')
+                    }
+                </div>
+            `;
+
+            // Scroll to results
+            spoilSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
         async function loadData() {
             try {
+                loadPriceCache();
+                loadSpoilSuccessRate();
                 const response = await fetch('data/mobs_full_stats.json');
                 if (!response.ok) throw new Error('Ошибка загрузки файла');
-                
+
                 allMonsters = await response.json();
-                
+
                 // Удаление дубликатов (по ID + name)
                 const unique = new Map();
                 allMonsters.forEach(monster => {
@@ -676,54 +773,53 @@
                     }
                 });
                 allMonsters = Array.from(unique.values());
-                
+
                 // Добавляем вычисленные поля
                 allMonsters = allMonsters.map(monster => ({
                     ...monster,
                     hp: extractHP(monster),
                     exp: extractExp(monster),
-                    avgAdena: monster.adena?.avg || 0,
+                    avgAdena: monster.adena,
                     hpMultiplier: monster.attributes?.hpMultiplier || 1,
                     efficiency: calculateEfficiency(monster),
-                    expEfficiency: calculateExpEfficiency(monster)
+                    expEfficiency: calculateExpEfficiency(monster),
                 }));
 
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('monstersTable').style.display = 'table';
                 document.getElementById('totalMonstersCount').textContent = allMonsters.length.toLocaleString('ru-RU');
-                
+
                 applyFilters();
             } catch (error) {
-                document.getElementById('loading').innerHTML = `<p class="error">❌ Ошибка загрузки: ${error.message}</p>`;
+                console.error('Error loading data:', error);
+                const container = document.querySelector('.container');
+                container.innerHTML = `<div class="error" style="text-align: center; padding: 50px;"><p>❌ Ошибка загрузки: ${error.message}</p></div>`;
             }
         }
 
         function extractHP(monster) {
-            return monster.stats?.hp || 0;
+            return monster.hp;
         }
 
         function extractExp(monster) {
-            return monster.stats?.exp || 0;
+            return monster.exp;
         }
 
-        function calculateEfficiency(monster) {
-            const hp = extractHP(monster);
-            const adena = monster.adena?.avg || 0;
-            return hp > 0 ? Math.round((adena / hp) * 100) / 100 : 0;
+        function calculateEfficiency(mob) {
+            const hp = mob.hp;
+            const adena = mob.avgAdena;
+            return hp && adena ? hp / adena : 0;
         }
 
-        function calculateExpEfficiency(monster) {
-            const hp = extractHP(monster);
-            const exp = extractExp(monster);
-            return hp > 0 ? Math.round((exp / hp) * 100) / 100 : 0;
+        function calculateExpEfficiency(mob) {
+            const hp = mob.hp;
+            const exp = mob.exp;
+            return hp && exp ? exp / hp : 0;
         }
 
-        // Ищет предмет в дропах и спойлах, возвращает chance или null
         function findItemInDrops(monster, searchText) {
             if (!searchText) return null;
-            
+
             const search = searchText.toLowerCase();
-            
+
             // Проверяем drops
             if (monster.drops) {
                 for (const drop of monster.drops) {
@@ -732,7 +828,7 @@
                     }
                 }
             }
-            
+
             // Проверяем spoils
             if (monster.spoils) {
                 for (const spoil of monster.spoils) {
@@ -741,7 +837,7 @@
                     }
                 }
             }
-            
+
             return null;
         }
 
@@ -759,26 +855,22 @@
             filteredMonsters = allMonsters.filter(monster => {
                 const matchesSearch = monster.name.toLowerCase().includes(search);
                 const matchesLevel = monster.level >= minLevel && monster.level <= maxLevel;
-                
+
                 // Если поиск по предмету активен, фильтруем только монстров с этим предметом
                 const matchesItem = !itemSearch || findItemInDrops(monster, itemSearch) !== null;
-                
+
                 return matchesSearch && matchesLevel && matchesItem;
             });
 
-            // Обновляем информацию о фильтрах
-            updateFiltersInfo(search, minLevel, maxLevel, itemSearch);
-
             // Сортировка
             sortMonsters(sortBy);
-            
+
             // Пагинация
             currentPage = 1;
             updatePagination();
-            renderTable();
 
-            // Обновляем статистику
-            updateStats();
+            // Обновляем информацию о фильтрах
+            updateFiltersInfo(search, minLevel, maxLevel, itemSearch);
         }
 
         function updateFiltersInfo(search, minLevel, maxLevel, itemSearch) {
@@ -788,7 +880,7 @@
             if (minLevel > 0 || maxLevel < 999) {
                 info.push(`📊 Уровень: ${minLevel === 0 ? '1' : minLevel} - ${maxLevel === 999 ? '∞' : maxLevel}`);
             }
-            
+
             const infoEl = document.getElementById('filtersInfo');
             if (info.length > 0) {
                 infoEl.textContent = 'Активные фильтры: ' + info.join(' • ');
@@ -799,86 +891,94 @@
 
         function sortMonsters(sortBy) {
             const sortMap = {
-                'name': (a, b) => a.name.localeCompare(b.name, 'ru'),
-                'level': (a, b) => b.level - a.level,
-                'adena': (a, b) => b.avgAdena - a.avgAdena,
-                'adena-asc': (a, b) => a.avgAdena - b.avgAdena,
-                'efficiency': (a, b) => b.efficiency - a.efficiency,
-                'exp': (a, b) => b.exp - a.exp,
-                'exp-efficiency': (a, b) => b.expEfficiency - a.expEfficiency,
-                'hp': (a, b) => b.hp - a.hp,
-                'hpMultiplier': (a, b) => (b.attributes?.hpMultiplier || 1) - (a.attributes?.hpMultiplier || 1)
+                'name': (a, b) => sortDirection === 'asc'
+                    ? a.name.localeCompare(b.name, 'ru')
+                    : b.name.localeCompare(a.name, 'ru'),
+                'level': (a, b) => sortDirection === 'asc'
+                    ? a.level - b.level
+                    : b.level - a.level,
+                'hp': (a, b) => sortDirection === 'asc'
+                    ? a.hp - b.hp
+                    : b.hp - a.hp,
+                'adena': (a, b) => sortDirection === 'asc'
+                    ? a.avgAdena - b.avgAdena
+                    : b.avgAdena - a.avgAdena,
+                'efficiency': (a, b) => sortDirection === 'asc'
+                    ? a.efficiency - b.efficiency
+                    : b.efficiency - a.efficiency,
+                'exp': (a, b) => sortDirection === 'asc'
+                    ? a.exp - b.exp
+                    : b.exp - a.exp,
+                'exp-efficiency': (a, b) => sortDirection === 'asc'
+                    ? a.expEfficiency - b.expEfficiency
+                    : b.expEfficiency - a.expEfficiency
             };
 
-            filteredMonsters.sort(sortMap[sortBy] || sortMap['name']);
+            filteredMonsters.sort(sortMap[sortBy]);
+            if (sortDirection === 'desc') {
+                filteredMonsters.reverse();
+            }
         }
 
-        function sortTable(column) {
-            const headerCells = document.querySelectorAll('th.sortable');
-            headerCells.forEach(cell => cell.classList.remove('sorted-asc', 'sorted-desc'));
-
-            if (currentSort === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                currentSort = column;
-                sortDirection = 'asc';
-            }
-
-            const columnIndex = Array.from(document.querySelectorAll('th.sortable')).findIndex(th => {
-                const sortValue = {
-                    'Название': 'name',
-                    'Уровень': 'level',
-                    'HP': 'hp',
-                    'Адена (avg)': 'adena',
-                    'Адена/HP': 'efficiency',
-                    'Опыт': 'exp',
-                    'Опыт/HP': 'exp-efficiency'
-                }[th.textContent.trim()];
-                return sortValue === column;
+        function sortTable() {
+            const headerCells = document.querySelectorAll('#monstersTable th.sortable');
+            headerCells.forEach(th => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
             });
 
-            if (columnIndex >= 0) {
-                const headerCell = document.querySelectorAll('th.sortable')[columnIndex];
+            const columnIndex = {
+                'Название': 'name',
+                'Уровень': 'level',
+                'HP': 'hp',
+                'Адена (avg)': 'adena',
+                'Адена/HP': 'efficiency',
+                'Опыт': 'exp',
+                'Опыт/HP': 'exp-efficiency'
+            }[this.textContent.trim()];
+
+            if (columnIndex) {
+                currentSort = columnIndex;
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                this.classList.add(sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                sortMonsters(columnIndex);
+                renderTable();
+            }
+            // Toggle sort direction
+            const headerCell = document.querySelector(`#monstersTable th[onclick="sortTable('${currentSort}')"]`);
+            if (headerCell) {
+                headerCell.classList.remove('sorted-asc', 'sorted-desc');
                 headerCell.classList.add(sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc');
             }
 
             const sortMap = {
-                'name': (a, b) => sortDirection === 'asc' 
+                'name': (a, b) => sortDirection === 'asc'
                     ? a.name.localeCompare(b.name, 'ru')
                     : b.name.localeCompare(a.name, 'ru'),
-                'level': (a, b) => sortDirection === 'asc' 
-                    ? a.level - b.level 
+                'level': (a, b) => sortDirection === 'asc'
+                    ? a.level - b.level
                     : b.level - a.level,
-                'hp': (a, b) => sortDirection === 'asc' 
-                    ? a.hp - b.hp 
+                'hp': (a, b) => sortDirection === 'asc'
+                    ? a.hp - b.hp
                     : b.hp - a.hp,
-                'adena': (a, b) => sortDirection === 'asc' 
-                    ? a.avgAdena - b.avgAdena 
+                'adena': (a, b) => sortDirection === 'asc'
+                    ? a.avgAdena - b.avgAdena
                     : b.avgAdena - a.avgAdena,
-                'efficiency': (a, b) => sortDirection === 'asc' 
-                    ? a.efficiency - b.efficiency 
+                'efficiency': (a, b) => sortDirection === 'asc'
+                    ? a.efficiency - b.efficiency
                     : b.efficiency - a.efficiency,
-                'exp': (a, b) => sortDirection === 'asc' 
-                    ? a.exp - b.exp 
+                'exp': (a, b) => sortDirection === 'asc'
+                    ? a.exp - b.exp
                     : b.exp - a.exp,
-                'exp-efficiency': (a, b) => sortDirection === 'asc' 
-                    ? a.expEfficiency - b.expEfficiency 
+                'exp-efficiency': (a, b) => sortDirection === 'asc'
+                    ? a.expEfficiency - b.expEfficiency
                     : b.expEfficiency - a.expEfficiency
             };
-
-            filteredMonsters.sort(sortMap[column] || sortMap['name']);
-            currentPage = 1;
-            updatePagination();
-            renderTable();
         }
 
         function renderTable() {
-            const tbody = document.getElementById('monstersBody');
-            tbody.innerHTML = '';
-
-            // Считаем colspan в зависимости от видимости столбца
+            const tbody = document.querySelector('#monstersTable tbody');
             const itemChanceColspan = currentItemSearch ? 11 : 10;
-            
+
             if (filteredMonsters.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="${itemChanceColspan}" style="text-align: center; padding: 40px; color: var(--text-muted);">Монстры не найдены 😔</td></tr>`;
                 return;
@@ -888,87 +988,97 @@
             const end = start + ITEMS_PER_PAGE;
             const pageMonsters = filteredMonsters.slice(start, end);
 
+            tbody.innerHTML = '';
+
             pageMonsters.forEach((monster, idx) => {
                 const monsterId = `monster-${start + idx}`;
                 const dropsId = `drops-${start + idx}`;
                 const wikiUrl = `https://wiki1.mw2.wiki${monster.href}`;
                 const hpMultiplier = monster.attributes?.hpMultiplier || 1;
-                
+
                 // Ищем предмет для этого монстра если активен поиск
                 const itemChance = findItemInDrops(monster, currentItemSearch);
-                const itemChanceCell = currentItemSearch 
-                    ? `<td style="color: var(--success); font-weight: 600; text-align: center;">${itemChance}</td>` 
+                const itemChanceCell = currentItemSearch
+                    ? `<td style="color: var(--success); font-weight: 600; text-align: center;">${itemChance}</td>`
                     : '';
-                
+
                 // Основная строка с данными
                 const row = document.createElement('tr');
                 row.className = 'expandable';
                 row.innerHTML = `
-                    <td>
-                        <div class="expand-btn" onclick="toggleDrops('${dropsId}', event)">+</div>
-                    </td>
-                    <td>
-                        <div class="monster-name">
-                            <span class="level-badge">${monster.level}</span>
-                            <span>${monster.name}</span>
-                            <a href="${wikiUrl}" target="_blank" class="wiki-link" title="Открыть на Wiki">📖</a>
-                        </div>
-                    </td>
+                    <td><button class="expand-btn" onclick="toggleDrops('${dropsId}', '${monsterId}')">+</button></td>
+                    <td>${monster.name}</td>
                     <td>${monster.level}</td>
-                    <td class="hp-value">${monster.hp.toLocaleString('ru-RU')}</td>
-                    <td class="hp-multiplier-value ${hpMultiplier > 1 ? 'boosted' : ''}">${hpMultiplier > 1 ? hpMultiplier + 'x 🔥' : '—'}</td>
-                    <td class="adena-value">${monster.avgAdena.toLocaleString('ru-RU')}</td>
-                    <td class="efficiency-value">${monster.efficiency.toLocaleString('ru-RU')} 💰/❤️</td>
-                    <td class="hp-value">${monster.exp.toLocaleString('ru-RU')}</td>
-                    <td class="efficiency-value">${monster.expEfficiency.toLocaleString('ru-RU')} 📚/❤️</td>
+                    <td>${NUMBER_FORMATTER.format(monster.hp)}</td>
+                    <td>${NUMBER_FORMATTER.format(hpMultiplier)}</td>
+                    <td>${PRICE_FORMATTER.format(monster.avgAdena)}</td>
+                    <td>${NUMBER_FORMATTER.format(monster.efficiency)}</td>
+                    <td>${NUMBER_FORMATTER.format(monster.exp)}</td>
+                    <td>${NUMBER_FORMATTER.format(monster.expEfficiency)}</td>
                     ${itemChanceCell}
-                    <td style="font-size: 0.9em; color: var(--text-muted);">ID: ${monster.id} | Дропов: ${(monster.drops?.length || 0)}</td>
                 `;
                 tbody.appendChild(row);
 
-                // Строка с дропами (скрытая)
+                // Строка с дропом (скрыта по умолчанию)
                 const dropsRow = document.createElement('tr');
-                dropsRow.className = 'drops-details';
                 dropsRow.id = dropsId;
-                dropsRow.innerHTML = `
-                    <td colspan="${itemChanceColspan}">
-                        <div class="drops-container">
-                            ${renderDropsContent(monster)}
-                        </div>
-                    </td>
-                `;
+                dropsRow.className = 'drops-details';
+                dropsRow.innerHTML = `<td colspan="${itemChanceColspan}"><div class="drops-container">${renderDropsContent(monster)}</div></td>`;
                 tbody.appendChild(dropsRow);
             });
         }
 
         function renderDropsContent(monster) {
             const drops = monster.drops || [];
-            
-            if (drops.length === 0) {
-                return '<div class="drops-empty">У этого монстра нет дропов</div>';
+            const spoils = monster.spoils || [];
+
+            if (drops.length === 0 && spoils.length === 0) {
+                return '<div class="drops-empty">У этого монстра нет дропов и спойла</div>';
             }
 
             let html = '<div class="drops-grid">';
-            drops.forEach(drop => {
-                html += `
-                    <div class="drop-item">
-                        <div class="drop-name">${drop.name}</div>
-                        <div class="drop-info">
-                            <span class="drop-amount">📦 ${drop.amount}</span>
-                            <span class="drop-chance">🎲 ${drop.chance}</span>
+
+            if (drops.length > 0) {
+                html += '<div class="drop-section"><h4>Дропы:</h4>';
+                drops.forEach(drop => {
+                    html += `
+                        <div class="drop-item">
+                            <div class="drop-name">${drop.name}</div>
+                            <div class="drop-info">
+                                <span class="drop-amount">${drop.amount}</span>
+                                <span class="drop-chance">${drop.chance}</span>
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+                html += '</div>';
+            }
+
+            if (spoils.length > 0) {
+                html += '<div class="drop-section"><h4>Спойл:</h4>';
+                spoils.forEach(spoil => {
+                    html += `
+                        <div class="drop-item">
+                            <div class="drop-name">${spoil.name}</div>
+                            <div class="drop-info">
+                                <span class="drop-amount">${spoil.amount}</span>
+                                <span class="drop-chance">${spoil.chance}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
             html += '</div>';
             return html;
         }
 
-        function toggleDrops(dropsId, event) {
+        function toggleDrops(dropsId, monsterId) {
             event.stopPropagation();
             const dropsRow = document.getElementById(dropsId);
             const expandBtn = event.target;
-            
+
             dropsRow.classList.toggle('show');
             expandBtn.textContent = dropsRow.classList.contains('show') ? '−' : '+';
         }
@@ -977,7 +1087,7 @@
             const totalPages = Math.ceil(filteredMonsters.length / ITEMS_PER_PAGE);
             const paginationEl = document.getElementById('pagination');
             const paginationInfoEl = document.getElementById('paginationInfo');
-            
+
             paginationEl.innerHTML = '';
 
             if (totalPages <= 1) {
@@ -985,22 +1095,52 @@
                 return;
             }
 
-            // Предыдущая страница
+            paginationInfoEl.textContent = `Показано ${((currentPage - 1) * ITEMS_PER_PAGE) + 1} - ${Math.min(currentPage * ITEMS_PER_PAGE, filteredMonsters.length)} из ${filteredMonsters.length} монстров`;
+
+            // Previous button
             const prevBtn = document.createElement('button');
-            prevBtn.textContent = '← Предыдущая';
+            prevBtn.textContent = '« Назад';
             prevBtn.disabled = currentPage === 1;
             prevBtn.onclick = () => {
                 if (currentPage > 1) {
                     currentPage--;
                     renderTable();
                     updatePagination();
-                    window.scrollTo(0, 0);
                 }
             };
             paginationEl.appendChild(prevBtn);
 
-            // Номера страниц
-            for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+            // Smart pagination - show limited page numbers
+            const maxVisiblePages = 7;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            // Adjust start page if we're near the end
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            // First page + ellipsis if needed
+            if (startPage > 1) {
+                const firstBtn = document.createElement('button');
+                firstBtn.textContent = '1';
+                firstBtn.onclick = () => {
+                    currentPage = 1;
+                    renderTable();
+                    updatePagination();
+                };
+                paginationEl.appendChild(firstBtn);
+
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'pagination-ellipsis';
+                    paginationEl.appendChild(ellipsis);
+                }
+            }
+
+            // Page number buttons
+            for (let i = startPage; i <= endPage; i++) {
                 const btn = document.createElement('button');
                 btn.textContent = i;
                 btn.className = i === currentPage ? 'active' : '';
@@ -1008,46 +1148,41 @@
                     currentPage = i;
                     renderTable();
                     updatePagination();
-                    window.scrollTo(0, 0);
                 };
                 paginationEl.appendChild(btn);
             }
 
-            // Следующая страница
+            // Last page + ellipsis if needed
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'pagination-ellipsis';
+                    paginationEl.appendChild(ellipsis);
+                }
+
+                const lastBtn = document.createElement('button');
+                lastBtn.textContent = totalPages;
+                lastBtn.onclick = () => {
+                    currentPage = totalPages;
+                    renderTable();
+                    updatePagination();
+                };
+                paginationEl.appendChild(lastBtn);
+            }
+
+            // Next button
             const nextBtn = document.createElement('button');
-            nextBtn.textContent = 'Следующая →';
+            nextBtn.textContent = 'Вперед »';
             nextBtn.disabled = currentPage === totalPages;
             nextBtn.onclick = () => {
                 if (currentPage < totalPages) {
                     currentPage++;
                     renderTable();
                     updatePagination();
-                    window.scrollTo(0, 0);
                 }
             };
             paginationEl.appendChild(nextBtn);
-
-            const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-            const end = Math.min(currentPage * ITEMS_PER_PAGE, filteredMonsters.length);
-            paginationInfoEl.textContent = `Страница ${currentPage} из ${totalPages} | Показано ${start}-${end} из ${filteredMonsters.length} монстров`;
-        }
-
-        function updateStats() {
-            document.getElementById('filteredCount').textContent = filteredMonsters.length;
-            
-            if (filteredMonsters.length === 0) {
-                document.getElementById('avgAdena').textContent = '0';
-                document.getElementById('bestEfficiency').textContent = '0';
-                return;
-            }
-
-            const avgAdena = Math.round(
-                filteredMonsters.reduce((sum, m) => sum + m.avgAdena, 0) / filteredMonsters.length
-            );
-            document.getElementById('avgAdena').textContent = avgAdena.toLocaleString('ru-RU');
-
-            const bestEfficiency = Math.max(...filteredMonsters.map(m => m.efficiency));
-            document.getElementById('bestEfficiency').textContent = bestEfficiency.toLocaleString('ru-RU');
         }
 
         function resetFilters() {
@@ -1055,17 +1190,12 @@
             document.getElementById('searchItemInput').value = '';
             document.getElementById('minLevelFilter').value = '';
             document.getElementById('maxLevelFilter').value = '';
-            document.getElementById('sortBy').value = 'name';
+            document.getElementById('sortBy').selectedIndex = 0;
             document.getElementById('filtersInfo').textContent = '';
             applyFilters();
         }
 
-        // Обработчик Enter для поиска по предмету
-        document.getElementById('searchItemInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                applyFilters();
-            }
-        });
+
 
         // Загрузка данных при открытии страницы
         loadData();
